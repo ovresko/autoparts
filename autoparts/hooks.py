@@ -12,7 +12,7 @@ app_email = "ovresko@gmail.com"
 app_license = "MIT"
 
 
-fixture = ["Custom Field","Custom Script","filters",]
+fixtures = ["Custom Field","Custom Script"]
 # Includes in <head>
 # ------------------
 

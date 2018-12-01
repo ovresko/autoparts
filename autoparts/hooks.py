@@ -11,6 +11,8 @@ app_color = "grey"
 app_email = "ovresko@gmail.com"
 app_license = "MIT"
 
+
+fixture = ["Custom Field","Custom Script","filters",]
 # Includes in <head>
 # ------------------
 

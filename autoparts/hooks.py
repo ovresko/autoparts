@@ -81,13 +81,11 @@ fixtures = ["Custom Field","Custom Script"]
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-#	}
-# }
+doc_events = {
+	"Sales Order": {
+		"on_submit": "autoparts.autoparts.doctype.version_vehicule.version_vehicule.create_demande",
+	}
+}
 
 # Scheduled Tasks
 # ---------------

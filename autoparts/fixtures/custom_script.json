@@ -1,1 +1,20 @@
-[]
+[
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Sales Order", 
+  "modified": "2018-12-05 18:11:16.808340", 
+  "name": "Sales Order-Client", 
+  "script": "frappe.ui.form.on(\"Sales Order\", \"refresh\", function (frm) {\n    if (frm.doc.docstatus == 1) {\n\n        frm.add_custom_button(\"Mettre \u00e0 jour et facturer\", function(){\n\n            var data1 = {\n                cmd_name: frm.doc.name,\n                req: frm.doc.demande_associe\n            };\n             \n            frappe.call({\n                method: \"autoparts.autoparts.doctype.version_vehicule.version_vehicule.update_cmd_invoice\",\n                args: data1,\n                callback: function (invoice) {\n                    \n                    frm.reload_doc();\n                    console.log(invoice);\n                    frappe.set_route(\"Form\",\"Sales Invoice\",invoice.message.name);\n                }\n            });\n\n        });\n\n        frm.add_custom_button(__(\"Sync demande\"), function () {\n            \n            var data1 = {\n                cmd_name: frm.doc.name,\n                req: frm.doc.demande_associe\n            };\n             \n            frappe.call({\n                method: \"autoparts.autoparts.doctype.version_vehicule.version_vehicule.sync_cmd\",\n                args: data1,\n                callback: function (stock_entrise) {\n                    console.log(\"RESULT\");\n                    console.log(stock_entrise);\n                    frm.reload_doc();\n                }\n            });\n        });\n\n    }\n});", 
+  "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Version vehicule", 
+  "modified": "2018-12-04 00:17:11.948116", 
+  "name": "Version vehicule-Client", 
+  "script": "frappe.ui.form.on(\"Version vehicule\",{\n validate: function(frm){\n\t \n\tvar _periode = \"(\"+ frm.doc.date_start + \" - \" + frm.doc.date_end+\")\";\t \n\tfrm.set_value('periode' , _periode );\n\t}\n});\n\n ", 
+  "script_type": "Client"
+ }
+]

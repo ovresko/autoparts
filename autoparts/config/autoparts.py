@@ -5,26 +5,37 @@ def get_data():
 	return [
 		{
             "label": "Gestion autoparts",
-            "items":[
+            "items": [
+                
                 {
                     "type": "doctype",
-                    "name": "Modele automobile"
+                    "name": "Version vehicule",
+					"description": _("Version vehicule"),
+                },
+				{
+                    "type": "doctype",
+                    "name": "Modele vehicule",
+					"description": _("Modele vehicule"),
                 },
                 {
                     "type": "doctype",
-                    "name": "Version automobile"
+                    "name": "Generation vehicule",
+					"description": _("Generation vehicule"),
+                },
+				{
+                    "type": "doctype",
+                    "name": "Marque vehicule",
+					"description": _("Marque vehicule"),
                 },
                 {
                     "type": "doctype",
-                    "name": "Constructeur"
+                    "name": "Item",
+					"description": _("Article"),
                 },
                 {
                     "type": "doctype",
-                    "name": "Item"
-                },
-                {
-                    "type": "doctype",
-                    "name": "Brand"
+                    "name": "Brand",
+					"description": _("Marque"),
                 }
             ]
         },

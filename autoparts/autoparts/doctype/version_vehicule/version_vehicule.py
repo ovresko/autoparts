@@ -79,13 +79,17 @@ def update_cmd_invoice(cmd_name,req):
 		commande = frappe.get_doc("Sales Order",cmd_name)
 		for item in commande.items:
 			first_or_default = next((x for x in SE if item.item_code == x.item_code), None)
-			item.qts_prepares = first_or_default.qty		
+			if first_or_default:
+				item.qts_prepares = first_or_default.qty
+			else:
+				frappe.msgprint(_("Article {0} est absent sur le transfere").format(item.item_code))	
 		commande.save()
 		invoice = make_sales_invoice(cmd_name)
 		# invoice.is_pos = True
 		for item in invoice.items:
 			first_or_default = next((x for x in SE if item.item_code == x.item_code), None)
-			item.qty = first_or_default.qty
+			if first_or_default:
+				item.qty = first_or_default.qty
 
 		update_stocke = frappe.get_value("Selling Settings", None, "vente_sans_bon_livraison")
 		if update_stocke:

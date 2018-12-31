@@ -1,5 +1,6 @@
 {
  "allow_copy": 1, 
+ "allow_events_in_timeline": 0, 
  "allow_guest_to_view": 0, 
  "allow_import": 0, 
  "allow_rename": 0, 
@@ -14,6 +15,7 @@
  "fields": [
   {
    "allow_bulk_edit": 0, 
+   "allow_in_quick_entry": 0, 
    "allow_on_submit": 0, 
    "bold": 0, 
    "collapsible": 0, 
@@ -41,14 +43,17 @@
    "reqd": 1, 
    "search_index": 0, 
    "set_only_once": 0, 
+   "translatable": 0, 
    "unique": 0
   }, 
   {
    "allow_bulk_edit": 0, 
+   "allow_in_quick_entry": 0, 
    "allow_on_submit": 0, 
    "bold": 0, 
    "collapsible": 0, 
    "columns": 0, 
+   "fetch_from": "version_vehicule.generation_vehicule", 
    "fieldname": "generation_vehicule", 
    "fieldtype": "Read Only", 
    "hidden": 0, 
@@ -61,7 +66,7 @@
    "label": "Generation vehicule", 
    "length": 0, 
    "no_copy": 0, 
-   "options": "version_vehicule.generation_vehicule", 
+   "options": "", 
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
@@ -72,14 +77,17 @@
    "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0, 
+   "translatable": 0, 
    "unique": 0
   }, 
   {
    "allow_bulk_edit": 0, 
+   "allow_in_quick_entry": 0, 
    "allow_on_submit": 0, 
    "bold": 0, 
    "collapsible": 0, 
    "columns": 0, 
+   "fetch_from": "version_vehicule.modele_vehicule", 
    "fieldname": "modele_vehicule", 
    "fieldtype": "Read Only", 
    "hidden": 0, 
@@ -92,7 +100,7 @@
    "label": "Modele vehicule", 
    "length": 0, 
    "no_copy": 0, 
-   "options": "version_vehicule.modele_vehicule", 
+   "options": "", 
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
@@ -103,14 +111,17 @@
    "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0, 
+   "translatable": 0, 
    "unique": 0
   }, 
   {
    "allow_bulk_edit": 0, 
+   "allow_in_quick_entry": 0, 
    "allow_on_submit": 0, 
    "bold": 0, 
    "collapsible": 0, 
    "columns": 0, 
+   "fetch_from": "version_vehicule.marque_vehicule", 
    "fieldname": "marque_vehicule", 
    "fieldtype": "Read Only", 
    "hidden": 0, 
@@ -123,7 +134,7 @@
    "label": "Marque vehicule", 
    "length": 0, 
    "no_copy": 0, 
-   "options": "version_vehicule.marque_vehicule", 
+   "options": "", 
    "permlevel": 0, 
    "precision": "", 
    "print_hide": 0, 
@@ -134,6 +145,7 @@
    "reqd": 0, 
    "search_index": 0, 
    "set_only_once": 0, 
+   "translatable": 0, 
    "unique": 0
   }
  ], 
@@ -147,7 +159,7 @@
  "issingle": 0, 
  "istable": 1, 
  "max_attachments": 0, 
- "modified": "2018-12-18 14:51:46.842331", 
+ "modified": "2019-01-01 00:10:03.539397", 
  "modified_by": "Administrator", 
  "module": "Autoparts", 
  "name": "Version vehicule item", 
@@ -161,5 +173,6 @@
  "sort_field": "modified", 
  "sort_order": "DESC", 
  "track_changes": 1, 
- "track_seen": 0
+ "track_seen": 0, 
+ "track_views": 0
 }

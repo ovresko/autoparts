@@ -16,5 +16,14 @@
   "name": "Version vehicule-Client", 
   "script": "frappe.ui.form.on(\"Version vehicule\",{\n validate: function(frm){\n\t \n\tvar _periode = \"(\"+ frm.doc.date_start + \" - \" + frm.doc.date_end+\")\";\t \n\tfrm.set_value('periode' , _periode );\n\t}\n});\n\n ", 
   "script_type": "Client"
+ }, 
+ {
+  "docstatus": 0, 
+  "doctype": "Custom Script", 
+  "dt": "Item", 
+  "modified": "2019-01-05 14:42:09.233754", 
+  "name": "Item-Client", 
+  "script": "frappe.ui.form.on(\"Item\", \"before_save\", function(frm) {\n     var infos = frm.doc.table_fiche_technique;\n\tvar desc = \"\";\n\tconsole.log(infos);\n\tfor (var key in infos ) {\n\t\tif(infos[key].important == true){\n\t\tdesc += infos[key].parametre+': '+infos[key].valeur+'<br>';\n\t\t}\n\t\tconsole.log(infos[key] );\n  \t\t\n\t}\n    frm.set_value(\"description\", desc );\n});", 
+  "script_type": "Client"
  }
 ]

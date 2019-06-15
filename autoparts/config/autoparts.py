@@ -14,15 +14,15 @@ def get_data():
                 },
 				{
                     "type": "doctype",
-                    "name": "Modele vehicule",
-					"description": _("Modele vehicule"),
-                },
-                {
-                    "type": "doctype",
                     "name": "Generation vehicule",
 					"description": _("Generation vehicule"),
                 },
-				{
+                {
+                    "type": "doctype",
+                    "name": "Modele de vehicule",
+					"description": _("Modele de vehicule"),
+                },
+		{
                     "type": "doctype",
                     "name": "Marque vehicule",
 					"description": _("Marque vehicule"),

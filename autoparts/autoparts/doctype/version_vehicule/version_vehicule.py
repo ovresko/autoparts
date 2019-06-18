@@ -9,6 +9,8 @@ from erpnext.selling.doctype.sales_order.sales_order import make_material_reques
 from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
 from frappe.desk.form import assign_to
 from erpnext.utilities.product import get_price, get_qty_in_stock
+from frappe import _, msgprint, throw
+
 
 class Versionvehicule(Document):
 	pass
@@ -31,8 +33,10 @@ def create_demande(doc,method):
 		req = make_material_request(doc.name)
 		req.schedule_date = doc.delivery_date
 		req.material_request_type = "Material Transfer"
+		req.title = _("{0}").format(req.material_request_type)
 		user = stock_settings.compte_assigner_stock
 		req.save()
+		req.title = _("{0}").format(req.material_request_type)
 		doc.demande_associe = req.name
 		for line in doc.items:
 			line.qts_prepares = line.qty

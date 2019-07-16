@@ -13,7 +13,8 @@ from frappe import _, msgprint, throw
 
 
 class Versionvehicule(Document):
-	pass
+	def autoname(self):
+		self.version = self.generation_vehicule+" "+self.commercial_name+" "+self.puissance_fiscale+" "+self.date_start+"-"+self.date_end+" "+self.code_moteur
 
 @frappe.whitelist(allow_guest=True)
 def get_item_price(item_code, price_list, customer_group, company, qty=1):

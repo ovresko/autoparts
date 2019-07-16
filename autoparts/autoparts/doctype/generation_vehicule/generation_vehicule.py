@@ -7,4 +7,5 @@ import frappe
 from frappe.model.document import Document
 
 class Generationvehicule(Document):
-	pass
+	def autoname(self):
+		self.name = self.modele_vehicule+" "+self.generation

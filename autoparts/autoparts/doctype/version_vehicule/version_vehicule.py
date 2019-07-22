@@ -10,12 +10,14 @@ from erpnext.selling.doctype.sales_order.sales_order import make_sales_invoice
 from frappe.desk.form import assign_to
 from erpnext.utilities.product import get_price, get_qty_in_stock
 from frappe import _, msgprint, throw
-
+from frappe.model.naming import make_autoname
 
 class Versionvehicule(Document):
 	def autoname(self):
+		self.code_interne = make_autoname(self.code_marque+self.code_modele+self.code_generation+".####")
 		self.version = self.generation_vehicule+" "+self.commercial_name+" "+self.puissance_fiscale+" "+self.date_start+"-"+self.date_end+" "+self.code_moteur
-
+	def validate(self):
+		self.version = self.generation_vehicule+" "+self.commercial_name+" "+self.puissance_fiscale+" "+self.date_start+"-"+ self.date_end+" "+self.code_moteur
 @frappe.whitelist(allow_guest=True)
 def get_item_price(item_code, price_list, customer_group, company, qty=1):
 	price = get_price(

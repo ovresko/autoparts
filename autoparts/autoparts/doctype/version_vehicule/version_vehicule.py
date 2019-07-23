@@ -15,9 +15,23 @@ from frappe.model.naming import make_autoname
 class Versionvehicule(Document):
 	def autoname(self):
 		self.code_interne = make_autoname(self.code_marque+self.code_modele+self.code_generation+".####")
-		self.version = self.generation_vehicule+" "+self.commercial_name+" "+self.puissance_fiscale+" "+self.date_start+"-"+self.date_end+" "+self.code_moteur
+		#self.version = self.generation_vehicule+" "+self.commercial_name+" "+self.puissance_fiscale+" "+self.date_start+"-"+self.date_end+" "+self.code_moteur
 	def validate(self):
-		self.version = self.generation_vehicule+" "+self.commercial_name+" "+self.puissance_fiscale+" "+self.date_start+"-"+ self.date_end+" "+self.code_moteur
+		periode = ''
+		if self.date_construction:
+			year,month,day = self.date_construction.split('-')
+			periode += month+'.'+year[-2:]
+		if self.date_fin_de_construction:
+			y,m,d = self.date_fin_de_construction.split('-')
+			periode += ' - '
+			periode += m+'.'+y[-2:]
+		#frappe.msgprint(periode)
+		if periode:
+			self.periode = '('+periode+')'
+		else:
+			self.periode = ''
+		generation = frappe.get_doc('Generation vehicule',self.generation_vehicule)
+		self.version = generation.generation+" "+self.commercial_name+" "+self.puissance_fiscale+" "+self.periode+" "+self.code_moteur
 @frappe.whitelist(allow_guest=True)
 def get_item_price(item_code, price_list, customer_group, company, qty=1):
 	price = get_price(

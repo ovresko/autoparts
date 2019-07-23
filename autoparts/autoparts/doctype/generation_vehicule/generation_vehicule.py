@@ -8,4 +8,4 @@ from frappe.model.document import Document
 
 class Generationvehicule(Document):
 	def autoname(self):
-		self.name = self.modele_vehicule+" "+self.generation
+		self.name = self.code_interne

@@ -20,10 +20,10 @@ class Versionvehicule(Document):
 	def validate(self):
 		periode = ''
 		if self.date_construction:
-			year,month,day = self.date_construction.split('-')
+			year,month,day = str(self.date_construction).split('-')
 			periode += month+'.'+year[-2:] +' - '
 		if self.date_fin_de_construction:
-			y,m,d = self.date_fin_de_construction.split('-')
+			y,m,d = str(self.date_fin_de_construction).split('-')
 			#periode += ' - '
 			periode += m+'.'+y[-2:]
 		#frappe.msgprint(periode)
@@ -31,8 +31,9 @@ class Versionvehicule(Document):
 			self.periode = '('+periode+')'
 		else:
 			self.periode = ''
+		modele = frappe.get_doc('Modele de vehicule',self.modele_vehicule)
 		generation = frappe.get_doc('Generation vehicule',self.generation_vehicule)
-		self.version = generation.generation+" "+self.commercial_name+" "+self.puissance_fiscale+" "+self.periode+" "+self.code_moteur
+		self.version = modele.modele+' '+generation.generation+" "+self.commercial_name+" "+self.puissance_fiscale+" "+self.periode+" "+self.code_moteur
 @frappe.whitelist(allow_guest=True)
 def get_item_price(item_code, price_list, customer_group, company, qty=1):
 	price = get_price(

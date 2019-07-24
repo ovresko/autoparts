@@ -4,7 +4,7 @@
  "allow_guest_to_view": 0, 
  "allow_import": 1, 
  "allow_rename": 1, 
- "autoname": "field:marque", 
+ "autoname": "field:code_interne", 
  "beta": 0, 
  "creation": "2018-12-03 21:49:30.606167", 
  "custom": 0, 
@@ -211,7 +211,7 @@
    "search_index": 0, 
    "set_only_once": 0, 
    "translatable": 0, 
-   "unique": 0
+   "unique": 1
   }
  ], 
  "has_web_view": 0, 
@@ -225,7 +225,7 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 0, 
- "modified": "2019-07-22 22:15:46.218903", 
+ "modified": "2019-07-24 20:48:25.472234", 
  "modified_by": "Administrator", 
  "module": "Autoparts", 
  "name": "Marque vehicule", 
@@ -259,7 +259,8 @@
  "show_name_in_global_search": 0, 
  "sort_field": "modified", 
  "sort_order": "DESC", 
+ "title_field": "marque", 
  "track_changes": 1, 
  "track_seen": 0, 
- "track_views": 1
+ "track_views": 0
 }

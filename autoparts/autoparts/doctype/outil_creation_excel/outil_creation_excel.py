@@ -23,6 +23,7 @@ def lancer(groupe):
 	result = ''
 	frappe.msgprint("Operation encours, vous devez laisser la page ouverte")
 	for oem in oems:
+		self.titre = "En cours..."
 		if not oem:
 			continue
 		model = frappe.new_doc('Item')
@@ -130,5 +131,5 @@ def lancer(groupe):
 			frappe.delete_doc('Article Excel', o.name)
 			#frappe.db.commit()
 			
-		
+	self.titre = "OK... operation termine"
 	return "Termine "+result

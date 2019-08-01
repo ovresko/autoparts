@@ -15,6 +15,7 @@ def lancer(groupe):
 	if not groupe:
 		frappe.msgprint(_("Groupe est invalide"))
 		return None
+#	try:
 	refs = []
 	items = frappe.db.get_all("Article Excel",filters={'groupe_article':groupe },fields=['designation_commerciale','oem_simplifie','name','version','generation','modele','groupe_article','oem', 'moog','bosch','mahle','mahle_2','meyle','era','bga','gsp','corteco','magneti_marelli','mann_filtre','clean_filters','hengst_filter','hengst_filter_2','champion'])
 	oems = set(i.oem_simplifie for i in items)
@@ -23,8 +24,12 @@ def lancer(groupe):
 	result = ''
 	frappe.msgprint("Operation encours, vous devez laisser la page ouverte")
 	for oem in oems:
-		self.titre = "En cours..."
+		#self.titre = "En cours..."
 		if not oem:
+			continue
+		#tpl = tuple([e.name for e in al])
+		all_models = frappe.db.get_all('OEM',filters={'oem_simplifie':oem},fields=['name'])
+		if all_models and len(all_models) > 0:
 			continue
 		model = frappe.new_doc('Item')
 		#result += doc_groupe.name
@@ -46,15 +51,18 @@ def lancer(groupe):
 			model.designation_commerciale = myversions[0].designation_commerciale
 		if oem:
 			row = model.append('oem')
-			row.oem=oem
+			row.oem_simplifie=oem
+			full_oem = [r for r in items if r.oem_simplifie == oem]
+			if full_oem:
+				row.oem = full_oem[0].oem
 		for version in myversions:
 			#frappe.msgprint(str(version.version))
 			#ver = frappe.get_doc('Version vehicule',version.version)
 			#frappe.msgprint(str(ver))
 			if version.version:
 				model.append('versions',{
-                        	'version_vehicule':version.version
-                        	})
+                       		'version_vehicule':version.version
+                       		})
 			elif version.generation:
 				model.append('generation_vehicule_supporte',{
 				'generation_vehicule':version.generation
@@ -87,49 +95,52 @@ def lancer(groupe):
 				#frappe.db.commit()
 			if o.bosch:
 				variant2 = get_variant(template=model.name,manufacturer='BOSCH',manufacturer_part_no=o.bosch)
-                	        variant2.save()
+               	        	variant2.save()
 			if o.mahle:
-                	        variant3 = get_variant(template=model.name,manufacturer='MAHLE',manufacturer_part_no=o.mahle)
-                	        variant3.save()
+               	        	variant3 = get_variant(template=model.name,manufacturer='MAHLE',manufacturer_part_no=o.mahle)
+               	        	variant3.save()
 			if o.mahle_2:
-                                variant3 = get_variant(template=model.name,manufacturer='MAHLE',manufacturer_part_no=o.mahle_2)
-                                variant3.save()
+                              	variant3 = get_variant(template=model.name,manufacturer='MAHLE',manufacturer_part_no=o.mahle_2)
+                           	variant3.save()
 			if o.meyle:
-                	        variant4 = get_variant(template=model.name,manufacturer='MEYLE',manufacturer_part_no=o.meyle)
-                	        variant4.save()
+               	        	variant4 = get_variant(template=model.name,manufacturer='MEYLE',manufacturer_part_no=o.meyle)
+               	        	variant4.save()
 			if o.era:
-                	        variant5 = get_variant(template=model.name,manufacturer='ERA',manufacturer_part_no=o.era)
-                	        variant5.save()
+               	        	variant5 = get_variant(template=model.name,manufacturer='ERA',manufacturer_part_no=o.era)
+               	        	variant5.save()
 			if o.gsp:
-                	        variant6 = get_variant(template=model.name,manufacturer='GSP',manufacturer_part_no=o.gsp)
-                	        variant6.save()
+               	        	variant6 = get_variant(template=model.name,manufacturer='GSP',manufacturer_part_no=o.gsp)
+               	        	variant6.save()
 			if o.corteco:
-                	        variant7 = get_variant(template=model.name,manufacturer='CORTECO',manufacturer_part_no=o.corteco)
-                	        variant7.save()
+               	        	variant7 = get_variant(template=model.name,manufacturer='CORTECO',manufacturer_part_no=o.corteco)
+               	        	variant7.save()
 			if o.bga:
-                	        variant8 = get_variant(template=model.name,manufacturer='BGA',manufacturer_part_no=o.bga)
-                	        variant8.save()
+               	        	variant8 = get_variant(template=model.name,manufacturer='BGA',manufacturer_part_no=o.bga)
+               	        	variant8.save()
 			if o.magneti_marelli:
-                	        variant9 = get_variant(template=model.name,manufacturer='MAGNETI MARELLI',manufacturer_part_no=o.magneti_marelli)
-                	        variant9.save()
+               	        	variant9 = get_variant(template=model.name,manufacturer='MAGNETI MARELLI',manufacturer_part_no=o.magneti_marelli)
+               	        	variant9.save()
 			if o.mann_filtre:
-                	        variant10 = get_variant(template=model.name,manufacturer='MANN FILTRE',manufacturer_part_no=o.mann_filtre)
-                	        variant10.save()
+               	        	variant10 = get_variant(template=model.name,manufacturer='MANN FILTRE',manufacturer_part_no=o.mann_filtre)
+               	        	variant10.save()
 			if o.clean_filters:
-                	        variant11 = get_variant(template=model.name,manufacturer='CLEAN FILTERS',manufacturer_part_no=o.clean_filters)
-                	        variant11.save()
+               	        	variant11 = get_variant(template=model.name,manufacturer='CLEAN FILTERS',manufacturer_part_no=o.clean_filters)
+               	       		variant11.save()
 			if o.hengst_filter:
-                	        variant11 = get_variant(template=model.name,manufacturer='HENGST FILTER',manufacturer_part_no=o.hengst_filter)
-                	    	variant11.save()
+               	        	variant11 = get_variant(template=model.name,manufacturer='HENGST FILTER',manufacturer_part_no=o.hengst_filter)
+               	    		variant11.save()
 			if o.hengst_filter_2:
-                                variant11 = get_variant(template=model.name,manufacturer='HENGST FILTER',manufacturer_part_no=o.hengst_filter_2)
-                                variant11.save()
+                               	variant11 = get_variant(template=model.name,manufacturer='HENGST FILTER',manufacturer_part_no=o.hengst_filter_2)
+                               	variant11.save()
 			if o.champion:
-                	        variant11 = get_variant(template=model.name,manufacturer='CHAMPION',manufacturer_part_no=o.champion)
-                	        variant11.save()
+               	        	variant11 = get_variant(template=model.name,manufacturer='CHAMPION',manufacturer_part_no=o.champion)
+               	        	variant11.save()
 			frappe.db.commit()
 			frappe.delete_doc('Article Excel', o.name)
 			#frappe.db.commit()
-			
-	self.titre = "OK... operation termine"
+		
+	frappe.msgprint("OK... operation termine")
 	return "Termine "+result
+#	except Exception as e:
+#		return e.message
+		#return "ERREUR"

@@ -58,6 +58,12 @@ def get_data():
 					"type": "page",
 					"name": "stock-balance",
 					"label": _("Stock Summary")
+				},
+				{
+					 "type": "report",
+                                        "is_query_report": True,
+                                        "name": "Versions sans articles",
+                                        "doctype": "Version vehicule",
 				}
 			]
 		}

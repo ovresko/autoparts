@@ -1,0 +1,29 @@
+{
+ "add_total_row": 0, 
+ "creation": "2019-07-31 21:36:09.003057", 
+ "disable_prepared_report": 1, 
+ "disabled": 0, 
+ "docstatus": 0, 
+ "doctype": "Report", 
+ "idx": 0, 
+ "is_standard": "Yes", 
+ "letter_head": "MON VEHCIULE", 
+ "modified": "2019-07-31 22:36:23.332259", 
+ "modified_by": "Administrator", 
+ "module": "Autoparts", 
+ "name": "Versions sans articles", 
+ "owner": "Administrator", 
+ "prepared_report": 0, 
+ "query": "SELECT\n  `tabVersion vehicule`.name as \"Code vehicule:Link/Version vehicule:100\",\n  `tabVersion vehicule`.version as \"Version vehicule:Data:400\",\n  `tabVersion vehicule`.nom_generation as \"Generation:Data:200\",\n  `tabVersion vehicule`.nom_modele as \"Modele:Data:100\",\n  `tabVersion vehicule`.code_moteur as \"Code Moteur:Data:100\",\n  `tabVersion vehicule`.carburant as \"Carburant:Data:200\"\n\nFROM\n  `tabVersion vehicule`\nWHERE\n  %(item_group)s IS NOT NULL AND\n  NOT EXISTS (SELECT version_vehicule,parent from `tabVersion vehicule item` WHERE `tabVersion vehicule item`.version_vehicule = `tabVersion vehicule`.name AND EXISTS \n  (SELECT name,item_group  from `tabItem` WHERE name = `tabVersion vehicule item`.parent AND item_group = ifnull(%(item_group)s,\" \")))", 
+ "ref_doctype": "Version vehicule", 
+ "report_name": "Versions sans articles", 
+ "report_type": "Query Report", 
+ "roles": [
+  {
+   "role": "System Manager"
+  }, 
+  {
+   "role": "Item Manager"
+  }
+ ]
+}

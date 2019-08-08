@@ -27,6 +27,16 @@ def get_data():
                     "name": "Marque vehicule",
 					"description": _("Marque vehicule"),
                 },
+		{
+                    "type": "doctype",
+                    "name": "Critere vehicule",
+                                        "description": _("Critere vehicule"),
+                },
+                {
+                    "type": "doctype",
+                    "name": "Fiche technique parametre",
+                                        "description": _("Fiche technique parametre"),
+                },
                 {
                     "type": "doctype",
                     "name": "Item",

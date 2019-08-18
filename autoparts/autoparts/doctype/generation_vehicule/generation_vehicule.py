@@ -8,7 +8,7 @@ from frappe.model.document import Document
 from frappe.model.naming import make_autoname
 
 class Generationvehicule(Document):
-	def valdiate(self):
+	def validate(self):
 		marque = frappe.get_doc('Modele de vehicule',self.modele_vehicule)
 		self.nom_generation = marque.modele + ' '+self.generation
 	def autoname(self):

@@ -7,4 +7,5 @@ import frappe
 from frappe.model.document import Document
 
 class Fichetechniqueitem(Document):
-	pass
+	def before_save(self):
+		self.titre = self.parametre+" "+self.valeur_p+" "+self.valeur

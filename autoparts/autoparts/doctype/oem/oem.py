@@ -7,4 +7,5 @@ import frappe
 from frappe.model.document import Document
 
 class OEM(Document):
-	pass
+        def validate(self):
+            self.oem_simplifie = self.oem.replace(" ","")

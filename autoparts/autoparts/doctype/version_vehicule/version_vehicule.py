@@ -26,10 +26,10 @@ class Versionvehicule(Document):
 			year,month,day = str(self.date_construction).split('-')
 			periode += month+'.'+year[-2:] +' - '
 			if self.date_fin_de_construction:
-				self.age = self.date_fin_de_construction.years - self.date_construction.years
+				self.age = self.date_fin_de_construction.year - self.date_construction.year
 			else:
 				today = nowdate()
-				self.age = today.years - self.date_construction.years
+				self.age = today.year - self.date_construction.year
 
 		if self.date_fin_de_construction:
 			y,m,d = str(self.date_fin_de_construction).split('-')

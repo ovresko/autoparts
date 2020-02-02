@@ -11,7 +11,7 @@ from frappe.desk.form import assign_to
 from erpnext.utilities.product import get_price, get_qty_in_stock
 from frappe import _, msgprint, throw
 from frappe.model.naming import make_autoname
-from frappe.utils import nowdate
+from frappe.utils import nowdate, getdate
 from datetime import date
 
 class Versionvehicule(Document):

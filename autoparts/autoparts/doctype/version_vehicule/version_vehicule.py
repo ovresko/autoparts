@@ -11,6 +11,8 @@ from frappe.desk.form import assign_to
 from erpnext.utilities.product import get_price, get_qty_in_stock
 from frappe import _, msgprint, throw
 from frappe.model.naming import make_autoname
+from frappe.utils import nowdate
+from datetime import date
 
 class Versionvehicule(Document):
 	def autoname(self):
@@ -19,13 +21,21 @@ class Versionvehicule(Document):
 		#self.version = self.generation_vehicule+" "+self.commercial_name+" "+self.puissance_fiscale+" "+self.date_start+"-"+self.date_end+" "+self.code_moteur
 	def validate(self):
 		periode = ''
+		self.age = 0
 		if self.date_construction:
 			year,month,day = str(self.date_construction).split('-')
 			periode += month+'.'+year[-2:] +' - '
+			if self.date_fin_de_construction:
+				self.age = self.date_fin_de_construction.years - self.date_construction.years
+			else:
+				today = nowdate()
+				self.age = today.years - self.date_construction.years
+
 		if self.date_fin_de_construction:
 			y,m,d = str(self.date_fin_de_construction).split('-')
 			#periode += ' - '
 			periode += m+'.'+y[-2:]
+		
 		#frappe.msgprint(periode)
 		if periode:
 			self.periode = '('+periode+')'

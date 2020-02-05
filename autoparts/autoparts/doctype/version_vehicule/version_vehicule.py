@@ -33,7 +33,7 @@ class Versionvehicule(Document):
 			else:
 				today = nowdate()
 				d = getdate(self.date_construction).year
-				self.age = today.year - d
+				self.age = getdate(today).year - d
 
 		if self.date_fin_de_construction:
 			y,m,d = str(self.date_fin_de_construction).split('-')

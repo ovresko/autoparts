@@ -25,15 +25,15 @@ class Versionvehicule(Document):
 		if self.date_construction:
 			year,month,day = str(self.date_construction).split('-')
 			periode += month+'.'+year[-2:] +' - '
-			if self.date_fin_de_construction:
-				f = getdate(self.date_fin_de_construction).year
-				d = getdate(self.date_construction).year
-				age = f - d
-				self.age = age
-			else:
-				today = nowdate()
-				d = getdate(self.date_construction).year
-				self.age = getdate(today).year - d
+			#if self.date_fin_de_construction:
+			#	f = getdate(self.date_fin_de_construction).year
+			#	d = getdate(self.date_construction).year
+			#	age = f - d
+			#	self.age = age
+			#else:
+			today = nowdate()
+			d = getdate(self.date_construction).year
+			self.age = getdate(today).year - d
 
 		if self.date_fin_de_construction:
 			y,m,d = str(self.date_fin_de_construction).split('-')

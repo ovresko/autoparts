@@ -127,7 +127,7 @@
  "issingle": 0, 
  "istable": 0, 
  "max_attachments": 0, 
- "modified": "2019-08-08 16:07:38.371826", 
+ "modified": "2020-05-12 01:11:35.254426", 
  "modified_by": "Administrator", 
  "module": "Autoparts", 
  "name": "Critere vehicule", 
@@ -154,7 +154,7 @@
    "write": 1
   }
  ], 
- "quick_entry": 0, 
+ "quick_entry": 1, 
  "read_only": 0, 
  "read_only_onload": 0, 
  "show_name_in_global_search": 0, 

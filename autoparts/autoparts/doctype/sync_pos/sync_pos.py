@@ -5,7 +5,7 @@
 from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
-from autoparts.autoparts.doctype.frappeclient import FrappeClient
+from autoparts.autoparts.doctype.sync_pos.frappeclient import FrappeClient
 
 
 class SyncPOS(Document):

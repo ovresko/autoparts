@@ -28,9 +28,14 @@ def start_sync():
 			_last = frappe.get_all(dt.document_type,fields=["name","modified"],order_by='modified asc',limit=1)
 			if _last:
 				li = _last[0]
-				result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", li.modified),'docstatus':("<", 2)})
+				if li:
+					lid =  li.modified.strftime()
+					print("lid %s" % lid)
+					result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", lid),'docstatus':("<", 2)})
 			elif dt.date_sync:
-				result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", dt.date_sync),'docstatus':("<", 2)})
+				dtd =  dt.date_sync.strftime()
+				print("dt %s" % dtd)
+				result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", dtd),'docstatus':("<", 2)})
 			else:
 				result = conn.get_list(dt.document_type, fields = ['*'], filters = {'docstatus':("<", 2)})
 			if result:

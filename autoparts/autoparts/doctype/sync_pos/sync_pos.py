@@ -15,7 +15,7 @@ def start_sync():
 	sp = frappe.get_single('Sync POS')
 	user = sp.user
 	pwd = sp.password
-	url = sp.server
+	url = sp.serveur
 	do_sync = sp.sync
 	items = sp.sync_pos_item
 	if(user and url and pwd and do_sync and items):
@@ -35,6 +35,7 @@ def start_sync():
 			if result:
 				#dt.date_sync = 
 				for val in result:
+					print(val)
 					if frappe.db.exists(dt.document_type,val.name):
 						val.ignore_permissions = True
 						val.ignore_mandatory = True

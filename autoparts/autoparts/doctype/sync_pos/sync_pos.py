@@ -69,4 +69,5 @@ def start_sync():
 							ignore_links=True, 
 							ignore_if_duplicate=True,
 							ignore_mandatory=True)
+						frappe.db.commit()
 				

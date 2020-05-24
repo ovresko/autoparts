@@ -25,7 +25,7 @@ def start_sync():
 			if not dt.sync or not dt.document_type:
 				continue
 			result = []
-			_last = frappe.get_all(dt.document_type,fields=["name","modified"],order_by='modified asc',limit=1)
+			_last = frappe.get_all(dt.document_type,fields=["name","modified"],order_by='modified desc',limit=1)
 			if _last:
 				li = _last[0]
 				if li:
@@ -44,9 +44,8 @@ def start_sync():
 					if not val:
 						continue
 					val["doctype"] = dt.document_type
-					print(val)
 					val = frappe.get_doc(val)
-					
+					print(val)
 					#print(val)
 					if frappe.db.exists(dt.document_type,val.name):
 						print("exists %s" % val.name)
@@ -55,6 +54,8 @@ def start_sync():
 						val.save()
 					else:
 						print("new %s" % val.name)
+						val.ignore_if_duplicate = True
+						val.ignore_links = True
 						val.ignore_permissions = True
 						val.ignore_mandatory = True
 						val.insert()

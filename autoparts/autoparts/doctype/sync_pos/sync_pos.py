@@ -44,8 +44,10 @@ def start_sync():
 					if not val:
 						continue
 					val["doctype"] = dt.document_type
-					val = frappe.get_doc(val)
+					
 					print("val %s " % val)
+					val = frappe.get_doc(val)
+					
 					#print(val)
 					if frappe.db.exists(dt.document_type,val.name):
 						print("exists %s" % val.name)

@@ -63,7 +63,7 @@ def start_sync():
 						val.flags.ignore_permissions = True
 						val.flags.ignore_mandatory = True
 						val.docstatus=None
-						val["__islocal"] = True
+						val.__islocal = True
 						val.insert(
 							ignore_permissions=True,
 							ignore_links=True, 

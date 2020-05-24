@@ -19,6 +19,7 @@ def start_sync():
 	do_sync = sp.sync
 	items = sp.sync_pos_item
 	if(user and url and pwd and do_sync and items):
+		print("%s %s %s" % (url,user,pwd))
 		conn = FrappeClient(url, user, pwd)
 		for dt in items:
 			if not dt.sync or not dt.document_type:

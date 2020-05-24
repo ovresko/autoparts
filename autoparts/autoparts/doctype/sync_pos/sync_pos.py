@@ -49,10 +49,12 @@ def start_sync():
 					
 					#print(val)
 					if frappe.db.exists(dt.document_type,val.name):
+						print("exists %s" % val.name)
 						val.ignore_permissions = True
 						val.ignore_mandatory = True
 						val.save()
-					else:						
+					else:
+						print("new %s" % val.name)
 						val.ignore_permissions = True
 						val.ignore_mandatory = True
 						val.insert()

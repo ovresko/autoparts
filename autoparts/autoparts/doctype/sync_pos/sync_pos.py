@@ -55,6 +55,7 @@ def start_sync():
 						val.flags.ignore_links = True
 						val.flags.ignore_permissions = True
 						val.flags.ignore_mandatory = True
+						val._bypass_modified = True
 						val.save(ignore_permissions=True, ignore_version=True)
 					else:
 						print("new %s" % val.name)
@@ -63,6 +64,7 @@ def start_sync():
 						val.flags.ignore_permissions = True
 						val.flags.ignore_mandatory = True
 						val.docstatus=None
+						val._bypass_modified = True
 						val.__islocal = True
 						val.insert(
 							ignore_permissions=True,

@@ -48,7 +48,7 @@ def start_sync():
 					val = frappe.get_doc(val)
 					
 					#print(val)
-					if frappe.db.exists(dt.document_type,original_name):
+					if frappe.db.exists(dt.document_type,val.name):
 						val.ignore_permissions = True
 						val.ignore_mandatory = True
 						val.save()

@@ -29,11 +29,11 @@ def start_sync():
 			if _last:
 				li = _last[0]
 				if li:
-					lid =  li.modified.strftime("%Y-%m-%d %H:%M:%S")
+					lid =  "%s.999999" % li.modified.strftime("%Y-%m-%d %H:%M:%S")
 					print("lid %s" % lid)
 					result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", lid),'docstatus':("<", 2)})
 			elif dt.date_sync:
-				dtd =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S")
+				dtd = "%s.999999" % dt.date_sync.strftime("%Y-%m-%d %H:%M:%S")
 				print("dt %s" % dtd)
 				result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", dtd),'docstatus':("<", 2)})
 			else:
@@ -51,14 +51,22 @@ def start_sync():
 					#print(val)
 					if frappe.db.exists(dt.document_type,val.name):
 						print("exists %s" % val.name)
-						val.ignore_permissions = True
-						val.ignore_mandatory = True
-						val.save()
+						val.flags.ignore_if_duplicate = True
+						val.flags.ignore_links = True
+						val.flags.ignore_permissions = True
+						val.flags.ignore_mandatory = True
+						val.save(ignore_permissions=True, ignore_version=True)
 					else:
 						print("new %s" % val.name)
-						val.ignore_if_duplicate = True
-						val.ignore_links = True
-						val.ignore_permissions = True
-						val.ignore_mandatory = True
-						val.insert()
+						val.flags.ignore_if_duplicate = True
+						val.flags.ignore_links = True
+						val.flags.ignore_permissions = True
+						val.flags.ignore_mandatory = True
+						val.docstatus=None
+						val.insert(
+							ignore_permissions=True,
+							ignore_links=True, 
+							ignore_if_duplicate=True,
+							ignore_mandatory=True, 
+							set_name=val.name)
 				

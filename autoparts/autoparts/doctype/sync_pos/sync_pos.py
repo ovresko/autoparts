@@ -67,6 +67,5 @@ def start_sync():
 							ignore_permissions=True,
 							ignore_links=True, 
 							ignore_if_duplicate=True,
-							ignore_mandatory=True, 
-							set_name=val.name)
+							ignore_mandatory=True)
 				

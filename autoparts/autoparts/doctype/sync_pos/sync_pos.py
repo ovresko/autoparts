@@ -43,13 +43,16 @@ def start_sync():
 				for val in result:
 					if not val:
 						continue
+					original_name = val["name"]
+					val["name"] = ""
 					val = frappe.get_doc(dt.document_type,val)
+					val.name = original_name
 					print(val)
-					if frappe.db.exists(dt.document_type,val.name):
+					if frappe.db.exists(dt.document_type,original_name):
 						val.ignore_permissions = True
 						val.ignore_mandatory = True
 						val.save()
-					else:
+					else:						
 						val.ignore_permissions = True
 						val.ignore_mandatory = True
 						val.insert()

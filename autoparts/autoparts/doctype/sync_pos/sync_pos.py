@@ -29,11 +29,11 @@ def start_sync():
 			if _last:
 				li = _last[0]
 				if li:
-					lid =  li.modified.strftime()
+					lid =  li.modified.strftime("%Y-%m-%d %H:%M:%S")
 					print("lid %s" % lid)
 					result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", lid),'docstatus':("<", 2)})
 			elif dt.date_sync:
-				dtd =  dt.date_sync.strftime()
+				dtd =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S")
 				print("dt %s" % dtd)
 				result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", dtd),'docstatus':("<", 2)})
 			else:

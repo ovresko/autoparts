@@ -41,6 +41,9 @@ def start_sync():
 			if result:
 				#dt.date_sync = 
 				for val in result:
+					if not val:
+						continue
+					val = frappe.get_doc(dt.document_type,val)
 					print(val)
 					if frappe.db.exists(dt.document_type,val.name):
 						val.ignore_permissions = True

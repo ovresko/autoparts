@@ -33,7 +33,7 @@ def save_data(doc):
 		return frappe.get_traceback()
 @frappe.whitelist()
 def set_last_modified(doctype,date,client):
-	lsp = frappe.db.get_list("Sync Last Push", fields = ['*'],order_by='modified asc',limit_page_length=1, filters = {'document_type':doctype,"client":client})
+	lsp = frappe.db.get_list("Sync Last Push", fields = ['*'],order_by='modified asc',filters = {'document_type':doctype,"client":client})
 	found = False
 	if lsp:
 		dt = lsp[0]

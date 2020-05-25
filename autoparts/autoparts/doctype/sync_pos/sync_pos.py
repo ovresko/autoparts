@@ -23,7 +23,7 @@ def save_data(doc):
 		item._original_modified = _obj["modified"]
 		item.save(ignore_permissions=True, ignore_version=True)
 		frappe.db.commit()
-		return "success %s - %s - %s" % (item.modified,_obj["modified"],doc)
+		return "success %s" % (item.name)
 		#url = self.url + "/api/resource/" + doc.get("doctype") + "/" + doc.get("name")
 		#data = frappe.as_json(doc)
 		#res = self.session.put(url, data={"data":data})
@@ -83,8 +83,9 @@ def start_sync():
 								continue
 							val["doctype"] = dt.document_type
 
-							print("up val %s " % val)
+							
 							val = frappe.get_doc(val)
+							print("uploading: %s" % val.name)
 							
 							if val:
 								try:
@@ -102,7 +103,8 @@ def start_sync():
 									print("up result %s " % result)
 									#conn.update(data)
 								except Exception:
-									frappe.throw(frappe.get_traceback())
+									msg = frappe.get_traceback()
+									print("ERROR %s " % (msg or ''))
 
 
 			# sync up
@@ -125,11 +127,11 @@ def start_sync():
 						continue
 					val["doctype"] = dt.document_type
 					
-					print("down val %s " % val)
-					val = frappe.get_doc(val)
 					
-					#print(val)
-					#if frappe.db.exists(dt.document_type,val.name):
+					val = frappe.get_doc(val)
+					print("downloading: %s" % val.name)
+					
+					
 					try:
 						print("exists %s" % val.name)
 						val._original_modified = val.modified
@@ -141,21 +143,6 @@ def start_sync():
 						val.save(ignore_permissions=True, ignore_version=True)
 						frappe.db.commit()
 					except:
-						print("get went wrong")
-					#else:
-					#	print("new %s" % val.name)
-					#	val._original_modified = val.modified
-					#	val.flags.ignore_if_duplicate = True
-					#	val.flags.ignore_links = True
-					#	val.flags.ignore_permissions = True
-					#	val.flags.ignore_mandatory = True
-					#	val.docstatus=None
-					#	val._bypass_modified = True
-					#	val.__islocal = True
-					#	val.insert(
-					#		ignore_permissions=True,
-					#		ignore_links=True, 
-					#		ignore_if_duplicate=True,
-					#		ignore_mandatory=True)
-					#	frappe.db.commit()
-			
+						msg = frappe.get_traceback()
+						print("get went wrong %s" % msg)
+

@@ -40,6 +40,7 @@ def set_last_modified(doctype,date,client):
 	if item:
 			#dtd =  date.strftime("%Y-%m-%d %H:%M:%S.%f")
 			item.date = date
+			sp.user = "AA"
 			sp.save()
 			found = True
 	if not found:		

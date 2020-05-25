@@ -51,6 +51,7 @@ def start_sync():
 					#print(val)
 					if frappe.db.exists(dt.document_type,val.name):
 						print("exists %s" % val.name)
+						val._original_modified = val.modified
 						val.flags.ignore_if_duplicate = True
 						val.flags.ignore_links = True
 						val.flags.ignore_permissions = True
@@ -60,6 +61,7 @@ def start_sync():
 						frappe.db.commit()
 					else:
 						print("new %s" % val.name)
+						val._original_modified = val.modified
 						val.flags.ignore_if_duplicate = True
 						val.flags.ignore_links = True
 						val.flags.ignore_permissions = True

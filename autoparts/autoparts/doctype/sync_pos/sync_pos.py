@@ -185,13 +185,14 @@ def start_sync():
 							
 					#frappe.db.set_value("Sync DocTypes",dt.name,"date_sync",dt.date_sync)
 					#date_sync =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
-					item = next( (x for x in sp.sync_doctypes if (x.name==dt.name)), None)
+					item = next( (x for x in sp.sync_pos_item if (x.name==dt.name)), None)
 					if item:
 							item.date = dt.date_sync
 							sp.save()
 							frappe.db.commit()
 					#frappe.db.sql("""update `tabSync DocTypes` set date_sync = '{}' where name = '{}'""".format(dt.date_sync,dt.name))
 					print("last sync pull %s" % dt.date_sync)
+			print("saving last edit in cloud %s" % last_edit)
 			if last_edit:
 				last_edit_result = conn.get_api("autoparts.autoparts.doctype.sync_pos.sync_pos.set_last_modified",
 								params={"doctype":dt.document_type,"date":last_edit,"client":client })

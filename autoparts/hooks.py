@@ -90,10 +90,10 @@ doc_events = {
 # Scheduled Tasks
 # ---------------
 
-# scheduler_events = {
-# 	"all": [
-# 		"autoparts.tasks.all"
-# 	],
+ scheduler_events = {
+ 	"all": [
+ 		"autoparts.autoparts.doctype.sync_pos.sync_pos.start_sync"
+ 	],
 # 	"daily": [
 # 		"autoparts.tasks.daily"
 # 	],
@@ -106,7 +106,7 @@ doc_events = {
 # 	"monthly": [
 # 		"autoparts.tasks.monthly"
 # 	]
-# }
+ }
 
 # Testing
 # -------

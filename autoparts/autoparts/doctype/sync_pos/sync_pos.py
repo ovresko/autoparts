@@ -57,7 +57,7 @@ def set_last_modified(doctype,date,client):
 		new_lsp.insert()
 		frappe.db.commit()
 	
-	return "last_edit_result = %s %s " % (dt.name,date)
+	return "last_edit_result = %s " % (date)
 
 @frappe.whitelist()
 def get_last_modified(doctype,client):
@@ -69,7 +69,7 @@ def get_last_modified(doctype,client):
 					 filters = {'document_type':doctype,"client":client})
 		if lsp:
 			dt = lsp[0]
-			if dt:
+			if dt and dt.date:
 				dtd =  dt.date.strftime("%Y-%m-%d %H:%M:%S.%f")
 				print("LAST EDIT TARGET %s" % dtd)
 				return dtd

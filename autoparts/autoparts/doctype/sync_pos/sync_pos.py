@@ -65,7 +65,7 @@ def start_sync():
 
 							print("up val %s " % val)
 							val = frappe.get_doc(val)
-							print("up obj %s " % val)
+							
 							if val:
 								try:
 									val._original_modified = val.modified
@@ -75,9 +75,8 @@ def start_sync():
 									val.flags.ignore_mandatory = True
 									val._bypass_modified = True
 									conn.update(val)
-								except:
-									print("push Unexpected error:", sys.exc_info()[0])
-									#print("push went wrong")
+								except Exception:
+									frappe.throw(frappe.get_traceback())
 
 
 			# sync up

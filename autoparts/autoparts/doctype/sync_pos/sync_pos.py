@@ -57,6 +57,7 @@ def start_sync():
 						val.flags.ignore_mandatory = True
 						val._bypass_modified = True
 						val.save(ignore_permissions=True, ignore_version=True)
+						frappe.db.commit()
 					else:
 						print("new %s" % val.name)
 						val.flags.ignore_if_duplicate = True

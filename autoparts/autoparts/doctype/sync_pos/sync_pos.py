@@ -34,7 +34,7 @@ def save_data(doc):
 @frappe.whitelist()
 def set_last_modified(doctype,date,client):
 	sp = frappe.get_single('Sync POS')
-	item = next( (x for x in sp.sync_last_push if (x.document_type==doctype and x.client=client)), None)
+	item = next( (x for x in sp.sync_last_push if (x.document_type==doctype and x.client==client)), None)
 	#lsp = frappe.db.get_list("Sync Last Push", fields = ['*'] ,filters = {'document_type':doctype,"client":client})
 	found = False
 	if item:

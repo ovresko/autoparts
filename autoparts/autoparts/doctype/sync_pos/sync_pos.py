@@ -16,10 +16,14 @@ def save_data(doc):
 	print("save_data %s" % doc)
 	try:
 		_obj = json.loads(doc)
+		#_bypass_modified = _obj["_bypass_modified"]
 		item = frappe.get_doc(_obj)
+		item._bypass_modified = True
+		item.modified = _obj["modified"]
+		item._original_modified = _obj["modified"]
 		item.save(ignore_permissions=True, ignore_version=True)
 		frappe.db.commit()
-		return "success"
+		return "success %s - %s - %s" % (item.modified,_obj["modified"],doc)
 		#url = self.url + "/api/resource/" + doc.get("doctype") + "/" + doc.get("name")
 		#data = frappe.as_json(doc)
 		#res = self.session.put(url, data={"data":data})
@@ -72,7 +76,7 @@ def start_sync():
 						my_items = frappe.db.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", last_edit),'docstatus':("<", 2)})
 					elif last_edit == "empty":
 						my_items = frappe.db.get_list(dt.document_type, fields = ['*'], filters = {'docstatus':("<", 2)})
-
+					print("found to push %s" % len(my_items || []))
 					if my_items:
 						for val in my_items:
 							if not val:

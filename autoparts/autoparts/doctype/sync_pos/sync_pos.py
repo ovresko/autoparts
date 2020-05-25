@@ -108,41 +108,42 @@ def start_sync():
 
 
 			# sync up
-			result = []
-			lid = get_last_modified(dt.document_type)
-			#_last = frappe.get_all(dt.document_type,fields=["name","modified"],order_by='modified desc',limit=1)
-			if lid and lid != "empty":
-				result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", lid),'docstatus':("<", 2)})
-			elif dt.date_sync:
-				dtd =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
-				print("dt %s" % dtd)
-				result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", dtd),'docstatus':("<", 2)})
-			elif lid == "empty":
-				result = conn.get_list(dt.document_type, fields = ['*'], filters = {'docstatus':("<", 2)})
-			print("found to pull %s" % len(result or []))
-			if result:				
-				#dt.date_sync = 
-				for val in result:
-					if not val:
-						continue
-					val["doctype"] = dt.document_type
-					
-					
-					val = frappe.get_doc(val)
-					print("downloading: %s" % val.name)
-					
-					
-					try:
-						print("exists %s" % val.name)
-						val._original_modified = val.modified
-						val.flags.ignore_if_duplicate = True
-						val.flags.ignore_links = True
-						val.flags.ignore_permissions = True
-						val.flags.ignore_mandatory = True
-						val._bypass_modified = True
-						val.save(ignore_permissions=True, ignore_version=True)
-						frappe.db.commit()
-					except:
-						msg = frappe.get_traceback()
-						print("get went wrong %s" % msg)
+			if dt.sync_pull:
+				result = []
+				lid = get_last_modified(dt.document_type)
+				#_last = frappe.get_all(dt.document_type,fields=["name","modified"],order_by='modified desc',limit=1)
+				if lid and lid != "empty":
+					result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", lid),'docstatus':("<", 2)})
+				elif dt.date_sync:
+					dtd =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
+					print("dt %s" % dtd)
+					result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", dtd),'docstatus':("<", 2)})
+				elif lid == "empty":
+					result = conn.get_list(dt.document_type, fields = ['*'], filters = {'docstatus':("<", 2)})
+				print("found to pull %s" % len(result or []))
+				if result:				
+					#dt.date_sync = 
+					for val in result:
+						if not val:
+							continue
+						val["doctype"] = dt.document_type
+
+
+						val = frappe.get_doc(val)
+						print("downloading: %s" % val.name)
+
+
+						try:
+							print("exists %s" % val.name)
+							val._original_modified = val.modified
+							val.flags.ignore_if_duplicate = True
+							val.flags.ignore_links = True
+							val.flags.ignore_permissions = True
+							val.flags.ignore_mandatory = True
+							val._bypass_modified = True
+							val.save(ignore_permissions=True, ignore_version=True)
+							frappe.db.commit()
+						except:
+							msg = frappe.get_traceback()
+							print("get went wrong %s" % msg)
 

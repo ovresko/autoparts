@@ -19,9 +19,10 @@ def save_data(doc):
 		#_bypass_modified = _obj["_bypass_modified"]
 		item = frappe.get_doc(_obj)
 		item._bypass_modified = True
+		item.modified = _obj["modified"]
 		item.save(ignore_permissions=True, ignore_version=True)
 		frappe.db.commit()
-		return "success"
+		return "success %s" % item.modified
 		#url = self.url + "/api/resource/" + doc.get("doctype") + "/" + doc.get("name")
 		#data = frappe.as_json(doc)
 		#res = self.session.put(url, data={"data":data})

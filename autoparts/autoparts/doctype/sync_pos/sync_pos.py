@@ -15,8 +15,8 @@ class SyncPOS(Document):
 def save_data(doc):
 	print("save_data %s" % doc)
 	try:
-		#_obj = json.loads(doc)
-		item = frappe.get_doc(doc)
+		_obj = json.loads(doc)
+		item = frappe.get_doc(_obj)
 		item.save(ignore_permissions=True, ignore_version=True)
 		frappe.db.commit()
 		return "success"

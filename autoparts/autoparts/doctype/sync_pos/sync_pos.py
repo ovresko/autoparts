@@ -15,8 +15,8 @@ class SyncPOS(Document):
 def save_data(doc):
 	print("save_data %s" % doc)
 	try:
-		_obj = json.loads(doc)
-		item = frappe.get_doc(_obj)
+		#_obj = json.loads(doc)
+		item = frappe.get_doc(doc)
 		item.save(ignore_permissions=True, ignore_version=True)
 		frappe.db.commit()
 		return "success"
@@ -92,7 +92,7 @@ def start_sync():
 									val._bypass_modified = True
 									result = conn.get_api(
 										"autoparts.autoparts.doctype.sync_pos.sync_pos.save_data",
-												 params={"doc":val.as_dict()}
+												 params={"doc":val}
 									)
 									#data = val.as_dict()
 									print("up result %s " % result)

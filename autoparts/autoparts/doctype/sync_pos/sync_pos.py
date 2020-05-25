@@ -40,7 +40,6 @@ def set_last_modified(doctype,date,client):
 	if item:
 			#dtd =  date.strftime("%Y-%m-%d %H:%M:%S.%f")
 			item.date = date
-			sp.user = "AA"
 			sp.save()
 			found = True
 	if not found:		
@@ -54,9 +53,9 @@ def set_last_modified(doctype,date,client):
 			'client':client
 		})
 		new_lsp.insert()
-		frappe.db.commit()
+	frappe.db.commit()
 	
-	return "last_edit_result = %s %s %s" % (date,found,sp.as_json())
+	return "last_edit_result = %s " % (date )
 
 @frappe.whitelist()
 def get_last_modified(doctype,client):
@@ -193,5 +192,6 @@ def start_sync():
 					if item:
 							item.date = dt.date_sync
 							sp.save()
+							frappe.db.commit()
 					#frappe.db.sql("""update `tabSync DocTypes` set date_sync = '{}' where name = '{}'""".format(dt.date_sync,dt.name))
 					print("last sync pull %s" % dt.date_sync)

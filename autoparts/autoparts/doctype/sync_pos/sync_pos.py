@@ -135,10 +135,6 @@ def start_sync():
 								except Exception:
 									msg = frappe.get_traceback()
 									print("ERROR %s " % (msg or ''))
-						if last_edit:
-							last_edit_result = conn.get_api("autoparts.autoparts.doctype.sync_pos.sync_pos.set_last_modified",
-											params={"doctype":dt.document_type,"date":last_edit,"client":client })
-							print("up result %s %s: %s " % (result,last_edit,last_edit_result))
 									
 
 
@@ -167,12 +163,13 @@ def start_sync():
 
 						val = frappe.get_doc(val)
 						print("downloading: %s" % val.name)
-
-
+						
 						try:
 							if not dt.date_sync or (get_datetime(val.modified) > get_datetime(dt.date_sync)):
 								dt.date_sync = get_datetime(val.modified)
-								print("changing date %s " % dt.date_sync)
+							if not last_edit or (get_datetime(val.modified) > get_datetime(last_edit)):
+								last_edit = get_datetime(val.modified)
+								
 							print("exists %s %s %s" % (val.modified,val.name,get_datetime(dt.date_sync)))
 							val._original_modified = val.modified
 							val.flags.ignore_if_duplicate = True
@@ -195,3 +192,7 @@ def start_sync():
 							frappe.db.commit()
 					#frappe.db.sql("""update `tabSync DocTypes` set date_sync = '{}' where name = '{}'""".format(dt.date_sync,dt.name))
 					print("last sync pull %s" % dt.date_sync)
+			if last_edit:
+				last_edit_result = conn.get_api("autoparts.autoparts.doctype.sync_pos.sync_pos.set_last_modified",
+								params={"doctype":dt.document_type,"date":last_edit,"client":client })
+				print("up result %s %s: %s " % (result,last_edit,last_edit_result))

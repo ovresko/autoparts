@@ -22,7 +22,7 @@ def save_data(doc):
 		item.modified = _obj["modified"]
 		item.save(ignore_permissions=True, ignore_version=True)
 		frappe.db.commit()
-		return "success %s" % item.modified
+		return "success %s - %s - %s" % (item.modified,_obj["modified"],doc)
 		#url = self.url + "/api/resource/" + doc.get("doctype") + "/" + doc.get("name")
 		#data = frappe.as_json(doc)
 		#res = self.session.put(url, data={"data":data})

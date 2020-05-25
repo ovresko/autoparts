@@ -74,7 +74,8 @@ def start_sync():
 									val.flags.ignore_permissions = True
 									val.flags.ignore_mandatory = True
 									val._bypass_modified = True
-									data = frappe.as_json(val)
+									data = val.as_dict()
+									print("up data %s " % data)
 									conn.update(data)
 								except Exception:
 									frappe.throw(frappe.get_traceback())

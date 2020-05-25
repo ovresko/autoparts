@@ -133,7 +133,7 @@ def start_sync():
 											"autoparts.autoparts.doctype.sync_pos.sync_pos.set_last_modified",
 											params={"doctype":dt.document_type,"date":last_edit,"client":client })
 										
-									print("up result %s : %s " % (result,last_edit_result))
+									print("up result %s %s: %s " % (result,last_edit,last_edit_result))
 									
 									#conn.update(data)
 								except Exception:

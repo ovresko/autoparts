@@ -42,7 +42,7 @@ def set_last_modified(doctype,date):
 			found = True
 	if not found:
 		sp = frappe.get_single('Sync POS')
-		new_lsp = rappe.get_doc({
+		new_lsp = frappe.get_doc({
 			'doctype': 'Sync Last Push',
 			'parent': sp.name,
 			'date':date,

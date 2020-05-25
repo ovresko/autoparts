@@ -128,17 +128,16 @@ def start_sync():
 												 params={"doc":val.as_json()}
 									)
 									#data = val.as_dict()
-									if result == "success":
-										last_edit_result = conn.get_api(
-											"autoparts.autoparts.doctype.sync_pos.sync_pos.set_last_modified",
-											params={"doctype":dt.document_type,"date":last_edit,"client":client })
-										
-									print("up result %s %s: %s " % (result,last_edit,last_edit_result))
 									
 									#conn.update(data)
 								except Exception:
 									msg = frappe.get_traceback()
 									print("ERROR %s " % (msg or ''))
+						if last_edit:
+							last_edit_result = conn.get_api("autoparts.autoparts.doctype.sync_pos.sync_pos.set_last_modified",
+											params={"doctype":dt.document_type,"date":last_edit,"client":client })
+							print("up result %s %s: %s " % (result,last_edit,last_edit_result))
+									
 
 
 			# sync up

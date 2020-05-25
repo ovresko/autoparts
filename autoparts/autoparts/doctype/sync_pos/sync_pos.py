@@ -42,33 +42,39 @@ def start_sync():
 				
 			# sync back
 			if dt.sync:
-				last_edit = conn.get_api(
-					"autoparts.autoparts.doctype.sync_pos.sync_pos.get_last_modified",
-							 params={"doctype":dt.document_type}
-				)
-				my_items = []
-				if last_edit and last_edit!= "empty":
-					my_items = frappe.db.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", last_edit),'docstatus':("<", 2)})
-				elif last_edit == "empty":
-					my_items = frappe.db.get_list(dt.document_type, fields = ['*'], filters = {'docstatus':("<", 2)})
+				try:
+					last_edit = conn.get_api(
+						"autoparts.autoparts.doctype.sync_pos.sync_pos.get_last_modified",
+								 params={"doctype":dt.document_type}
+					)
+				except:
+					print("Something went wrong")
+				else:
+					my_items = []
+					if last_edit and last_edit!= "empty":
+						my_items = frappe.db.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", last_edit),'docstatus':("<", 2)})
+					elif last_edit == "empty":
+						my_items = frappe.db.get_list(dt.document_type, fields = ['*'], filters = {'docstatus':("<", 2)})
 
-				if my_items:
-					for val in my_items:
-						if not val:
-							continue
-						val["doctype"] = dt.document_type
+					if my_items:
+						for val in my_items:
+							if not val:
+								continue
+							val["doctype"] = dt.document_type
 
-						print("up val %s " % val)
-						val = frappe.get_doc(val)
-						if val:
-							val._original_modified = val.modified
-							val.flags.ignore_if_duplicate = True
-							val.flags.ignore_links = True
-							val.flags.ignore_permissions = True
-							val.flags.ignore_mandatory = True
-							val._bypass_modified = True
-							conn.update(val)
-
+							print("up val %s " % val)
+							val = frappe.get_doc(val)
+							if val:
+								try:
+									val._original_modified = val.modified
+									val.flags.ignore_if_duplicate = True
+									val.flags.ignore_links = True
+									val.flags.ignore_permissions = True
+									val.flags.ignore_mandatory = True
+									val._bypass_modified = True
+									conn.update(val)
+								except:
+									print("push went wrong")
 
 
 			# sync up
@@ -95,15 +101,18 @@ def start_sync():
 					
 					#print(val)
 					#if frappe.db.exists(dt.document_type,val.name):
-					print("exists %s" % val.name)
-					val._original_modified = val.modified
-					val.flags.ignore_if_duplicate = True
-					val.flags.ignore_links = True
-					val.flags.ignore_permissions = True
-					val.flags.ignore_mandatory = True
-					val._bypass_modified = True
-					val.save(ignore_permissions=True, ignore_version=True)
-					frappe.db.commit()
+					try:
+						print("exists %s" % val.name)
+						val._original_modified = val.modified
+						val.flags.ignore_if_duplicate = True
+						val.flags.ignore_links = True
+						val.flags.ignore_permissions = True
+						val.flags.ignore_mandatory = True
+						val._bypass_modified = True
+						val.save(ignore_permissions=True, ignore_version=True)
+						frappe.db.commit()
+					except:
+						print("get went wrong")
 					#else:
 					#	print("new %s" % val.name)
 					#	val._original_modified = val.modified

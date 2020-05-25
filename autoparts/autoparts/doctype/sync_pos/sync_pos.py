@@ -76,7 +76,7 @@ def start_sync():
 						my_items = frappe.db.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", last_edit),'docstatus':("<", 2)})
 					elif last_edit == "empty":
 						my_items = frappe.db.get_list(dt.document_type, fields = ['*'], filters = {'docstatus':("<", 2)})
-
+					print("found to push %s" % len(my_items || []))
 					if my_items:
 						for val in my_items:
 							if not val:

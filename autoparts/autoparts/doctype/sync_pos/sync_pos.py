@@ -15,8 +15,8 @@ class SyncPOS(Document):
 def save_data(doc):
 	print("save_data %s" % doc)
 	try:
-		_obj = json.loads(doc)
-		item = frappe.get_doc(_obj)
+		#_obj = json.loads(doc)
+		item = frappe.get_doc(doc)
 		item.save(ignore_permissions=True, ignore_version=True)
 		frappe.db.commit()
 		return "success"
@@ -24,8 +24,8 @@ def save_data(doc):
 		#data = frappe.as_json(doc)
 		#res = self.session.put(url, data={"data":data})
 		#return self.post_process(res)
-	except:
-		return "error"
+	except Exception:
+		return frappe.get_traceback()
 	
 @frappe.whitelist()
 def get_last_modified(doctype):

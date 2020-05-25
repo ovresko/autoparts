@@ -56,7 +56,7 @@ def set_last_modified(doctype,date,client):
 		new_lsp.insert()
 		frappe.db.commit()
 	
-	return "last_edit_result = %s " % (date)
+	return "last_edit_result = %s %s" % (date,found)
 
 @frappe.whitelist()
 def get_last_modified(doctype,client):

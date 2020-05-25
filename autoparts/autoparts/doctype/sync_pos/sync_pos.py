@@ -55,7 +55,7 @@ def set_last_modified(doctype,date,client):
 		new_lsp.insert()
 	frappe.db.commit()
 	
-	return "last_edit_result = %s " % (date )
+	return "date pushed to cloud with date %s " % (date )
 
 @frappe.whitelist()
 def get_last_modified(doctype,client):
@@ -69,7 +69,6 @@ def get_last_modified(doctype,client):
 			dt = lsp[0]
 			if dt and dt.date:
 				dtd =  dt.date.strftime("%Y-%m-%d %H:%M:%S.%f")
-				print("LAST EDIT TARGET %s" % dtd)
 				return dtd
 	return None
 
@@ -98,7 +97,7 @@ def start_sync():
 				except:
 					print("Something went wrong")
 				else:
-					print("last_edit %s" % last_edit)
+					
 					my_items = []
 					if last_edit:
 						my_items = frappe.db.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", last_edit),'docstatus':("<", 2)})
@@ -142,13 +141,8 @@ def start_sync():
 			if dt.sync_pull:
 				result = []
 				
-				#_last = frappe.get_all(dt.document_type,fields=["name","modified"],order_by='modified desc',limit=1)
-				#if lid and lid != "empty":
-				#	result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", lid),'docstatus':("<", 2)})
-				#el
 				if dt.date_sync:
 					dtd =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
-					print("dt %s" % dtd)
 					result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", dtd),'docstatus':("<", 2)})
 				else:
 					result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})
@@ -170,7 +164,7 @@ def start_sync():
 							if not last_edit or (get_datetime(val.modified) > get_datetime(last_edit)):
 								last_edit = get_datetime(val.modified)
 								
-							print("exists %s %s %s" % (val.modified,val.name,get_datetime(dt.date_sync)))
+							
 							val._original_modified = val.modified
 							val.flags.ignore_if_duplicate = True
 							val.flags.ignore_links = True
@@ -192,8 +186,7 @@ def start_sync():
 							frappe.db.commit()
 					#frappe.db.sql("""update `tabSync DocTypes` set date_sync = '{}' where name = '{}'""".format(dt.date_sync,dt.name))
 					print("last sync pull %s" % dt.date_sync)
-			print("saving last edit in cloud %s" % last_edit)
+			print("last sync push %s" % last_edit)
 			if last_edit:
 				last_edit_result = conn.get_api("autoparts.autoparts.doctype.sync_pos.sync_pos.set_last_modified",
 								params={"doctype":dt.document_type,"date":last_edit,"client":client })
-				print("up result %s %s: %s " % (result,last_edit,last_edit_result))

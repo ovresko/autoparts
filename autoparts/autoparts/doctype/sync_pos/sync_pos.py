@@ -20,6 +20,7 @@ def save_data(doc):
 		item = frappe.get_doc(_obj)
 		item._bypass_modified = True
 		item.modified = _obj["modified"]
+		item._original_modified = _obj["modified"]
 		item.save(ignore_permissions=True, ignore_version=True)
 		frappe.db.commit()
 		return "success %s - %s - %s" % (item.modified,_obj["modified"],doc)

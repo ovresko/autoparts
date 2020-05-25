@@ -7,6 +7,7 @@ import frappe
 from frappe.model.document import Document
 from autoparts.autoparts.doctype.sync_pos.frappeclient import FrappeClient
 import json
+from frappe.utils import getdate
 
 class SyncPOS(Document):
 	pass
@@ -135,7 +136,7 @@ def start_sync():
 
 
 						try:
-							if not dt.date_sync or val.modified > dt.date_sync:
+							if not dt.date_sync or val.modified > getdate(dt.date_sync):
 								dt.date_sync = val.modified
 							print("exists %s" % val.name)
 							val._original_modified = val.modified

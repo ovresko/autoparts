@@ -59,7 +59,7 @@ def start_sync():
 		for dt in items:
 			if not dt.document_type:
 				continue
-				
+			#lid = get_last_modified(dt.document_type)	
 			# sync back
 			if dt.sync:
 				try:
@@ -110,18 +110,19 @@ def start_sync():
 			# sync up
 			if dt.sync_pull:
 				result = []
-				lid = get_last_modified(dt.document_type)
+				
 				#_last = frappe.get_all(dt.document_type,fields=["name","modified"],order_by='modified desc',limit=1)
-				if lid and lid != "empty":
-					result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", lid),'docstatus':("<", 2)})
-				elif dt.date_sync:
+				#if lid and lid != "empty":
+				#	result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", lid),'docstatus':("<", 2)})
+				#el
+				if dt.date_sync:
 					dtd =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
 					print("dt %s" % dtd)
-					result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", dtd),'docstatus':("<", 2)})
-				elif lid == "empty":
-					result = conn.get_list(dt.document_type, fields = ['*'], filters = {'docstatus':("<", 2)})
+					result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc', filters = {'modified':(">", dtd),'docstatus':("<", 2)})
+				else:
+					result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc', filters = {'docstatus':("<", 2)})
 				print("found to pull %s" % len(result or []))
-				if result:				
+				if result:
 					#dt.date_sync = 
 					for val in result:
 						if not val:
@@ -134,6 +135,8 @@ def start_sync():
 
 
 						try:
+							if not dt.date_sync or val.modified > dt.date_sync:
+								dt.date_sync = val.modified
 							print("exists %s" % val.name)
 							val._original_modified = val.modified
 							val.flags.ignore_if_duplicate = True
@@ -146,4 +149,7 @@ def start_sync():
 						except:
 							msg = frappe.get_traceback()
 							print("get went wrong %s" % msg)
+							
+					frappe.db.set_value("Sync DocTypes",dt.name,"date_sync",dt.date_sync)
+					print("last sync pull %s" % dt.date_sync)
 

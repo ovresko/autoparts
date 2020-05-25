@@ -33,18 +33,16 @@ def save_data(doc):
 		return frappe.get_traceback()
 @frappe.whitelist()
 def set_last_modified(doctype,date,client):
-	lsp = frappe.db.get_list("Sync Last Push", fields = ['*'] ,filters = {'document_type':doctype,"client":client})
+	sp = frappe.get_single('Sync POS')
+	item = next( (x for x in sp.sync_last_push if (x.document_type==doctype and x.client=client)), None)
+	#lsp = frappe.db.get_list("Sync Last Push", fields = ['*'] ,filters = {'document_type':doctype,"client":client})
 	found = False
-	if lsp:
-		dt = lsp[0]
-		if dt:
+	if item:
 			#dtd =  date.strftime("%Y-%m-%d %H:%M:%S.%f")
-			#dt.date = get_datetime(date) 
-			frappe.db.sql("""update `tabSync Last Push` set date ='{}' where name = '{}'""".format(date,dt.name))
-			#rappe.db.set_value("Sync Last Push",dt.name,"date",dt.date)
+			item.date = date
+			sp.update()
 			found = True
-	if not found:
-		sp = frappe.get_single('Sync POS')
+	if not found:		
 		new_lsp = frappe.get_doc({
 			'doctype': 'Sync Last Push',
 			'parent': sp.name,
@@ -190,5 +188,9 @@ def start_sync():
 							
 					#frappe.db.set_value("Sync DocTypes",dt.name,"date_sync",dt.date_sync)
 					#date_sync =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
-					frappe.db.sql("""update `tabSync DocTypes` set date_sync = '{}' where name = '{}'""".format(dt.date_sync,dt.name))
+					item = next( (x for x in sp.sync_doctypes if (x.name==dt.name)), None)
+					if item:
+							item.date = dt.date_sync
+							sp.update()
+					#frappe.db.sql("""update `tabSync DocTypes` set date_sync = '{}' where name = '{}'""".format(dt.date_sync,dt.name))
 					print("last sync pull %s" % dt.date_sync)

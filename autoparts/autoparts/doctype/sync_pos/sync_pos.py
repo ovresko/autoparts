@@ -39,7 +39,7 @@ def set_last_modified(doctype,date,client):
 		dt = lsp[0]
 		if dt:
 			dt.date = get_datetime(date) 
-			frappe.db.set_value("Sync Last Push",dt.name,"date",get_datetime(date))
+			frappe.db.set_value("Sync Last Push",dt.name,"date",dt.date)
 			found = True
 	if not found:
 		sp = frappe.get_single('Sync POS')
@@ -54,7 +54,7 @@ def set_last_modified(doctype,date,client):
 		})
 		new_lsp.insert()
 		frappe.db.commit()
-	return "last_edit_result %s " % dt.date
+	return "last_edit_result = %s %s " % (dt.name,dt.date)
 
 @frappe.whitelist()
 def get_last_modified(doctype,client):

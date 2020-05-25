@@ -38,8 +38,9 @@ def set_last_modified(doctype,date,client):
 	if lsp:
 		dt = lsp[0]
 		if dt:
-			dt.date = get_datetime(date) 
-			frappe.db.set_value("Sync Last Push",dt.name,"date",dt.date)
+			#dt.date = get_datetime(date) 
+			frappe.db.sql("""update `tabSync Last Push` set date = %s where name = '%s'""" % (date,dt.name))
+			#rappe.db.set_value("Sync Last Push",dt.name,"date",dt.date)
 			found = True
 	if not found:
 		sp = frappe.get_single('Sync POS')
@@ -54,9 +55,8 @@ def set_last_modified(doctype,date,client):
 		})
 		new_lsp.insert()
 		frappe.db.commit()
-	frappe.clear_cache(doctype="Sync POS")
-	frappe.clear_cache(doctype="Sync Last Push")
-	return "last_edit_result = %s %s " % (dt.name,dt.date)
+	
+	return "last_edit_result = %s %s " % (dt.name,date)
 
 @frappe.whitelist()
 def get_last_modified(doctype,client):
@@ -187,7 +187,6 @@ def start_sync():
 							msg = frappe.get_traceback()
 							print("get went wrong %s" % msg)
 							
-					frappe.db.set_value("Sync DocTypes",dt.name,"date_sync",dt.date_sync)
-					frappe.clear_cache(doctype="Sync POS")
-					frappe.clear_cache(doctype="Sync DocTypes")
+					#frappe.db.set_value("Sync DocTypes",dt.name,"date_sync",dt.date_sync)
+					frappe.db.sql("""update `tabSync DocTypes` set date_sync = %s where name = '%s'""" % (dt.date_sync,dt.name))
 					print("last sync pull %s" % dt.date_sync)

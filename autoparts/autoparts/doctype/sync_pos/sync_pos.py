@@ -38,7 +38,7 @@ def set_last_modified(doctype,date,client):
 	if lsp:
 		dt = lsp[0]
 		if dt:
-			frappe.db.set_value("Sync Last Push",dt.name,"date",date)
+			frappe.db.set_value("Sync Last Push",dt.name,"date",get_datetime(date))
 			found = True
 	if not found:
 		sp = frappe.get_single('Sync POS')

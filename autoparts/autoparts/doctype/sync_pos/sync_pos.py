@@ -151,5 +151,5 @@ def start_sync():
 							print("get went wrong %s" % msg)
 							
 					frappe.db.set_value("Sync DocTypes",dt.name,"date_sync",dt.date_sync)
-					print("last sync pull %s" % dt.date_sync)
+					print("last sync pull %s" % dt)
 

@@ -24,7 +24,7 @@ def save_data(doc):
 		item._original_modified = _obj["modified"]
 		item.save(ignore_permissions=True, ignore_version=True)
 		frappe.db.commit()
-		return "success %s" % (item.name)
+		return "success"
 		#url = self.url + "/api/resource/" + doc.get("doctype") + "/" + doc.get("name")
 		#data = frappe.as_json(doc)
 		#res = self.session.put(url, data={"data":data})
@@ -33,35 +33,40 @@ def save_data(doc):
 		return frappe.get_traceback()
 @frappe.whitelist()
 def set_last_modified(doctype,date):
-	sp = frappe.get_single('Sync POS')
-	items = sp.sync_pos_item
-	dt = next((x for x in items if item.document_type==doctype), None)
-	if dt:
-		frappe.db.set_value("Sync DocTypes",dt.name,"date_sync",date)
-		return "ok"
-	
+	lsp = frappe.db.get_list("Sync Last Push", fields = ['*'],order_by='modified asc',limit_page_length=1, filters = {'document_type':doctype})
+	found = False
+	if lsp:
+		dt = lsp[0]
+		if dt:
+			frappe.db.set_value("Sync Last Push",dt.name,"date",date)
+			found = True
+	if not found:
+		sp = frappe.get_single('Sync POS')
+		new_lsp = rappe.get_doc({
+			'doctype': 'Sync Last Push',
+			'parent': sp.name,
+			'date':date,
+			'parentfield':'sync_last_push',
+			'parenttype':'Sync POS',
+			'document_type':doctype,
+			'client':sp.client_name
+		})
+		new_lsp.insert()
 
 @frappe.whitelist()
-def get_last_modified(doctype):
-	if doctype:
-		sp = frappe.get_single('Sync POS')
-		items = sp.sync_pos_item
-		dt = next((x for x in items if item.document_type==doctype), None)
-		if dt:
-			dtd =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
-			print("LAST EDIT TARGET %s" % dtd)
-			return dtd
-			
-		#_last = frappe.get_all(doctype,fields=["name","modified"],order_by='modified desc',limit=1)
-		#if _last:
-		#	li = _last[0]
-		#	if li:
-		#		lid =  li.modified.strftime("%Y-%m-%d %H:%M:%S.%f")
-		#		print("lid %s" % lid)
-		#		return lid
-		#else:
-			# empty
-		#	return "empty"
+def get_last_modified(doctype,client):
+	if doctype and client:
+		lsp = frappe.db.get_list("Sync Last Push", 
+					 fields = ['*'],
+					 order_by='modified asc',
+					 limit_page_length=1,
+					 filters = {'document_type':doctype,"client":client})
+		if lsp:
+			dt = lsp[0]
+			if dt:
+				dtd =  dt.date.strftime("%Y-%m-%d %H:%M:%S.%f")
+				print("LAST EDIT TARGET %s" % dtd)
+				return dtd
 	return None
 
 def start_sync():
@@ -70,6 +75,7 @@ def start_sync():
 	pwd = sp.password
 	url = sp.serveur
 	do_sync = sp.sync
+	client = sp.client_name
 	items = sp.sync_pos_item
 	if(user and url and pwd and do_sync and items):
 		print("%s %s %s" % (url,user,pwd))
@@ -83,7 +89,7 @@ def start_sync():
 				try:
 					last_edit = conn.get_api(
 						"autoparts.autoparts.doctype.sync_pos.sync_pos.get_last_modified",
-								 params={"doctype":dt.document_type}
+								 params={"doctype":dt.document_type,"client":client}
 					)
 				except:
 					print("Something went wrong")
@@ -120,10 +126,11 @@ def start_sync():
 												 params={"doc":val.as_json()}
 									)
 									#data = val.as_dict()
-									last_edit_result = conn.get_api(
-										"autoparts.autoparts.doctype.sync_pos.sync_pos.set_last_modified",
-												 params={"doctype":dt.document_type,"date":last_edit }
-									)
+									if result == "success":
+										last_edit_result = conn.get_api(
+											"autoparts.autoparts.doctype.sync_pos.sync_pos.set_last_modified",
+											params={"doctype":dt.document_type,"date":last_edit })
+										
 									print("up result %s : %s " % (result,last_edit_result))
 									
 									#conn.update(data)

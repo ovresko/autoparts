@@ -92,7 +92,7 @@ def start_sync():
 									val._bypass_modified = True
 									result = conn.get_api(
 										"autoparts.autoparts.doctype.sync_pos.sync_pos.save_data",
-												 params={"doc":val.as_dict()}
+												 params={"doc":val}
 									)
 									#data = val.as_dict()
 									print("up result %s " % result)

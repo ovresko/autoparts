@@ -129,6 +129,7 @@ def start_sync():
 										"autoparts.autoparts.doctype.sync_pos.sync_pos.save_data",
 												 params={"doc":val.as_json()}
 									)
+									print("push result : %s" % result)
 									#data = val.as_dict()
 									
 									#conn.update(data)

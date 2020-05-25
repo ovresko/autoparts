@@ -119,9 +119,9 @@ def start_sync():
 				if dt.date_sync:
 					dtd =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
 					print("dt %s" % dtd)
-					result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc', filters = {'modified':(">", dtd),'docstatus':("<", 2)})
+					result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=100, filters = {'modified':(">", dtd),'docstatus':("<", 2)})
 				else:
-					result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc', filters = {'docstatus':("<", 2)})
+					result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=100, filters = {'docstatus':("<", 2)})
 				print("found to pull %s" % len(result or []))
 				if result:
 					#dt.date_sync = 

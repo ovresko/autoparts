@@ -50,6 +50,7 @@ def start_sync():
 				except:
 					print("Something went wrong")
 				else:
+					print("last_edit %s" % last_edit)
 					my_items = []
 					if last_edit and last_edit!= "empty":
 						my_items = frappe.db.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", last_edit),'docstatus':("<", 2)})

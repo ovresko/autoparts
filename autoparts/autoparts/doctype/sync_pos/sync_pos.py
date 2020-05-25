@@ -52,6 +52,7 @@ def set_last_modified(doctype,date):
 			'client':sp.client_name
 		})
 		new_lsp.insert()
+		frappe.db.commit()
 	return "last_edit_result %s " % date
 
 @frappe.whitelist()

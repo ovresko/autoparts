@@ -31,20 +31,37 @@ def save_data(doc):
 		#return self.post_process(res)
 	except Exception:
 		return frappe.get_traceback()
+@frappe.whitelist()
+def set_last_modified(doctype,date):
+	sp = frappe.get_single('Sync POS')
+	items = sp.sync_pos_item
+	dt = next((x for x in items if item.document_type==doctype), None)
+	if dt:
+		frappe.db.set_value("Sync DocTypes",dt.name,"date_sync",date)
+		return "ok"
 	
+
 @frappe.whitelist()
 def get_last_modified(doctype):
 	if doctype:
-		_last = frappe.get_all(doctype,fields=["name","modified"],order_by='modified desc',limit=1)
-		if _last:
-			li = _last[0]
-			if li:
-				lid =  li.modified.strftime("%Y-%m-%d %H:%M:%S.%f")
-				print("lid %s" % lid)
-				return lid
-		else:
+		sp = frappe.get_single('Sync POS')
+		items = sp.sync_pos_item
+		dt = next((x for x in items if item.document_type==doctype), None)
+		if dt:
+			dtd =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
+			print("LAST EDIT TARGET %s" % dtd)
+			return dtd
+			
+		#_last = frappe.get_all(doctype,fields=["name","modified"],order_by='modified desc',limit=1)
+		#if _last:
+		#	li = _last[0]
+		#	if li:
+		#		lid =  li.modified.strftime("%Y-%m-%d %H:%M:%S.%f")
+		#		print("lid %s" % lid)
+		#		return lid
+		#else:
 			# empty
-			return "empty"
+		#	return "empty"
 	return None
 
 def start_sync():
@@ -73,10 +90,10 @@ def start_sync():
 				else:
 					print("last_edit %s" % last_edit)
 					my_items = []
-					if last_edit and last_edit!= "empty":
-						my_items = frappe.db.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", last_edit),'docstatus':("<", 2)})
-					elif last_edit == "empty":
-						my_items = frappe.db.get_list(dt.document_type, fields = ['*'], filters = {'docstatus':("<", 2)})
+					if last_edit:
+						my_items = frappe.db.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", last_edit),'docstatus':("<", 2)})
+					else:
+						my_items = frappe.db.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})
 					print("found to push %s" % len(my_items or []))
 					if my_items:
 						for val in my_items:
@@ -90,6 +107,8 @@ def start_sync():
 							
 							if val:
 								try:
+									if not last_edit or (get_datetime(val.modified) > get_datetime(last_edit)):
+										last_edit = get_datetime(val.modified)
 									val._original_modified = val.modified
 									val.flags.ignore_if_duplicate = True
 									val.flags.ignore_links = True
@@ -101,7 +120,12 @@ def start_sync():
 												 params={"doc":val.as_json()}
 									)
 									#data = val.as_dict()
-									print("up result %s " % result)
+									last_edit_result = conn.get_api(
+										"autoparts.autoparts.doctype.sync_pos.sync_pos.set_last_modified",
+												 params={"doctype":dt.document_type,"date":last_edit }
+									)
+									print("up result %s : %s " % (result,last_edit_result))
+									
 									#conn.update(data)
 								except Exception:
 									msg = frappe.get_traceback()

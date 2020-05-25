@@ -1,5 +1,6 @@
 import requests
 import json
+import frappe
 
 
 try:
@@ -93,7 +94,8 @@ class FrappeClient(object):
 		'''Update a remote document
 		:param doc: dict or Document object to be updated remotely. `name` is mandatory for this'''
 		url = self.url + "/api/resource/" + doc.get("doctype") + "/" + doc.get("name")
-		res = self.session.put(url, data={"data":json.dumps(doc)})
+		data = frappe.as_json(doc)
+		res = self.session.put(url, data={"data":data})
 		return self.post_process(res)
 
 	def bulk_update(self, docs):

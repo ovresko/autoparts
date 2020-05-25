@@ -119,8 +119,8 @@ def start_sync():
 				result = conn.get_list(dt.document_type, fields = ['*'], filters = {'modified':(">", dtd),'docstatus':("<", 2)})
 			elif lid == "empty":
 				result = conn.get_list(dt.document_type, fields = ['*'], filters = {'docstatus':("<", 2)})
-			if result:
-				print("found to pull %s" % len(result or []))
+			print("found to pull %s" % len(result or []))
+			if result:				
 				#dt.date_sync = 
 				for val in result:
 					if not val:

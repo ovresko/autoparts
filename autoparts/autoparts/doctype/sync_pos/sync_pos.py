@@ -6,11 +6,27 @@ from __future__ import unicode_literals
 import frappe
 from frappe.model.document import Document
 from autoparts.autoparts.doctype.sync_pos.frappeclient import FrappeClient
-
+import json
 
 class SyncPOS(Document):
 	pass
 
+@frappe.whitelist()
+def save_data(doc):
+	print("save_data %s" % doc)
+	try:
+		_obj = json.loads(doc)
+		item = frappe.get_doc(_obj)
+		item.save(ignore_permissions=True, ignore_version=True)
+		frappe.db.commit()
+		return "success"
+		#url = self.url + "/api/resource/" + doc.get("doctype") + "/" + doc.get("name")
+		#data = frappe.as_json(doc)
+		#res = self.session.put(url, data={"data":data})
+		#return self.post_process(res)
+	except:
+		return "error"
+	
 @frappe.whitelist()
 def get_last_modified(doctype):
 	if doctype:
@@ -74,9 +90,13 @@ def start_sync():
 									val.flags.ignore_permissions = True
 									val.flags.ignore_mandatory = True
 									val._bypass_modified = True
-									data = val.as_dict()
-									print("up data %s " % data)
-									conn.update(data)
+									result = conn.get_api(
+										"autoparts.autoparts.doctype.sync_pos.sync_pos.save_data",
+												 params={"doc":val.as_dict()}
+									)
+									#data = val.as_dict()
+									print("up result %s " % result)
+									#conn.update(data)
 								except Exception:
 									frappe.throw(frappe.get_traceback())
 

@@ -136,7 +136,7 @@ def start_sync():
 
 
 						try:
-							if not dt.date_sync or val.modified > getdate(dt.date_sync):
+							if not dt.date_sync or (getdate(val.modified) > getdate(dt.date_sync)):
 								dt.date_sync = val.modified
 							print("exists %s" % val.name)
 							val._original_modified = val.modified

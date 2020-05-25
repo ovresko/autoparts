@@ -32,7 +32,7 @@ def save_data(doc):
 	except Exception:
 		return frappe.get_traceback()
 @frappe.whitelist()
-def set_last_modified(doctype,date):
+def set_last_modified(doctype,date,client):
 	lsp = frappe.db.get_list("Sync Last Push", fields = ['*'],order_by='modified asc',limit_page_length=1, filters = {'document_type':doctype})
 	found = False
 	if lsp:
@@ -49,7 +49,7 @@ def set_last_modified(doctype,date):
 			'parentfield':'sync_last_push',
 			'parenttype':'Sync POS',
 			'document_type':doctype,
-			'client':sp.client_name
+			'client':client
 		})
 		new_lsp.insert()
 		frappe.db.commit()
@@ -131,7 +131,7 @@ def start_sync():
 									if result == "success":
 										last_edit_result = conn.get_api(
 											"autoparts.autoparts.doctype.sync_pos.sync_pos.set_last_modified",
-											params={"doctype":dt.document_type,"date":last_edit })
+											params={"doctype":dt.document_type,"date":last_edit,"client":client })
 										
 									print("up result %s : %s " % (result,last_edit_result))
 									

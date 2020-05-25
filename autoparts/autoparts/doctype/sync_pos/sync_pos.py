@@ -100,6 +100,7 @@ def start_sync():
 					
 					my_items = []
 					if last_edit:
+						print("pushing modified > %s " % last_edit)
 						my_items = frappe.db.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", last_edit),'docstatus':("<", 2)})
 					else:
 						my_items = frappe.db.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})
@@ -143,6 +144,7 @@ def start_sync():
 				
 				if dt.date_sync:
 					dtd =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
+					print("pulling modified > %s " % dtd)
 					result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", dtd),'docstatus':("<", 2)})
 				else:
 					result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})

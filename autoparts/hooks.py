@@ -91,17 +91,12 @@ doc_events = {
 # ---------------
 
 scheduler_events = {
-#	"all": [
-#		"autoparts.autoparts.doctype.sync_pos.sync_pos.start_sync"
-#	],
+	"all": [
+		"autoparts.autoparts.doctype.sync_pos.sync_pos.start_sync"
+	],
 # 	"daily": [
 # 		"autoparts.tasks.daily"
 # 	],
-	"cron": [
-		"*/15 * * * *": [
-		   "autoparts.autoparts.doctype.sync_pos.sync_pos.start_sync"
-		],	
-	],
 # 	"hourly": [
 # 		"autoparts.autoparts.doctype.sync_pos.sync_pos.start_sync"
 # 	],

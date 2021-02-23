@@ -18,8 +18,8 @@ def save_data(doc):
 	try:
 		
 		_obj = json.loads(doc)
-		if frappe.db.exists(doc.get("doctype"), {'name': doc.get("name")}):
-			original = frappe.get_doc(doc.get("doctype"),doc.get("name"))
+		if frappe.db.exists(_obj.get("doctype"), {'name': _obj.get("name")}):
+			original = frappe.get_doc(_obj.get("doctype"),_obj.get("name"))
 			if get_datetime(original.modified) > get_datetime(_obj["modified"]):
 				return "New Version exists %s" % doc['name']
 		#_bypass_modified = _obj["_bypass_modified"]

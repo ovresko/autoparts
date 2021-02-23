@@ -146,11 +146,11 @@ def start_sync():
 				
 				if dt.date_sync:
 					dtd =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
-					print("pulling modified > %s " % dtd)
+					print("%s pulling modified > %s " % (dt.document_type,dtd))
 					result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", dtd),'docstatus':("<", 2)})
 				else:
 					result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})
-				print("found to pull %s" % len(result or []))
+				print("%s found to pull %s" % (dt.document_type,len(result or [])))
 				if result:
 					#dt.date_sync = 
 					for val in result:
@@ -160,7 +160,7 @@ def start_sync():
 
 
 						val = frappe.get_doc(val)
-						print("downloading: %s" % val.name)
+						print("downloading %s: %s" % (dt.document_type,val.name))
 						
 						try:
 							if not dt.date_sync or (get_datetime(val.modified) > get_datetime(dt.date_sync)):
@@ -193,10 +193,10 @@ def start_sync():
 							print("Something went wrong last saving local date")
 							
 					#frappe.db.sql("""update `tabSync DocTypes` set date_sync = '{}' where name = '{}'""".format(dt.date_sync,dt.name))
-					print("last sync pull %s" % dt.date_sync)
+					print("%s last sync pull %s" % (dt.document_type,dt.date_sync))
 			
 			if last_edit:
-				print("last sync push %s" % last_edit)
+				print("%s last sync push %s" % (dt.document_type,last_edit))
 				try:
 					last_edit_result = conn.get_api("autoparts.autoparts.doctype.sync_pos.sync_pos.set_last_modified",
 								params={"doctype":dt.document_type,"date":last_edit,"client":client })

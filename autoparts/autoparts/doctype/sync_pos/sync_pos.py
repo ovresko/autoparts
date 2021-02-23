@@ -158,7 +158,7 @@ def start_sync():
 					try:
 						if _doctype.issingle:
 							single = conn.get_doc(dt.document_type,dt.document_type)
-							if single and get_datetime(single.modified) > get_datetime(dt.date_sync):
+							if single and get_datetime(single['modified']) > get_datetime(dt.date_sync):
 								result.append(single)
 						else:
 							result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", dtd),'docstatus':("<", 2)})

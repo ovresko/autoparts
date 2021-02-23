@@ -219,9 +219,11 @@ def start_sync():
 					item = next( (x for x in sp.sync_pos_item if (x.name==dt.name)), None)
 					if item:
 						try:
-							item.date = dt.date_sync
+							
+							item.date_sync = dt.date_sync
 							sp.save()
 							frappe.db.commit()
+							print("updating last sync for %s:  %s" % (dt.document_type,item.date_sync))
 						except:
 							msg = frappe.get_traceback()
 							print("Something went wrong last saving local date %s" % msg)

@@ -87,7 +87,7 @@ def start_sync():
 		for dt in items:
 			if not dt.document_type:
 				continue
-			if not frappe.db.table_exists(dt.document_type) and not frappe.get_doc(dt.document_type):
+			if not frappe.db.exists('DocType', dt.document_type):
 				print("%s doesn't exist" % dt.document_type)
 				input()
 				continue

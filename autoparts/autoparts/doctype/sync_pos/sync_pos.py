@@ -85,12 +85,12 @@ def start_sync():
 	do_sync = sp.sync
 	client = sp.client_name
 	items = sp.sync_pos_item
-	last_edit = None
+	
 	if(user and url and pwd and do_sync and items):
 		print("%s %s %s" % (url,user,pwd))
 		conn = FrappeClient(url, user, pwd)
 		for dt in items:
-			
+			last_edit = None
 			if not dt.document_type:
 				continue
 			if not frappe.db.exists('DocType', dt.document_type):

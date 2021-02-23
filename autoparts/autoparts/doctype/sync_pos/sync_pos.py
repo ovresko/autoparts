@@ -109,9 +109,9 @@ def start_sync():
 					my_items = []
 					if last_edit:
 						print("pushing modified > %s " % last_edit)
-						my_items = frappe.db.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", last_edit),'docstatus':("<", 2)})
+						my_items = frappe.db.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=40, filters = {'modified':(">", last_edit),'docstatus':("<", 2)})
 					else:
-						my_items = frappe.db.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})
+						my_items = frappe.db.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=40, filters = {'docstatus':("<", 2)})
 					print("found to push %s" % len(my_items or []))
 					if my_items:
 						for val in my_items:
@@ -161,7 +161,7 @@ def start_sync():
 							if single and get_datetime(single['modified']) > get_datetime(dt.date_sync):
 								result.append(single)
 						else:
-							result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", dtd),'docstatus':("<", 2)})
+							result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=40, filters = {'modified':(">", dtd),'docstatus':("<", 2)})
 					except:
 						msg = frappe.get_traceback()
 						print("Something went wrong sync_pull if dt.date_sync: %s" % msg)
@@ -174,7 +174,7 @@ def start_sync():
 							if single:
 								result.append(single)
 						else:
-							result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})
+							result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=40, filters = {'docstatus':("<", 2)})
 					except:
 						msg = frappe.get_traceback()
 						print("Something went wrong sync_pull NO dt.date_sync: %s" % msg)

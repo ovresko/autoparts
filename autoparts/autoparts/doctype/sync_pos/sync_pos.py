@@ -90,7 +90,7 @@ def start_sync():
 				continue
 			if not frappe.db.exists('DocType', dt.document_type):
 				print("%s doesn't exist" % dt.document_type)
-				a = input()
+				#a = input()
 				continue
 			_doctype = frappe.get_doc("DocType", dt.document_type)
 			#lid = get_last_modified(dt.document_type)	
@@ -103,15 +103,15 @@ def start_sync():
 					)
 				except:
 					print("Something went wrong at pushing")
-					a = input()
+					#a = input()
 				else:
 					
 					my_items = []
 					if last_edit:
 						print("pushing modified > %s " % last_edit)
-						my_items = frappe.db.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=40, filters = {'modified':(">", last_edit),'docstatus':("<", 2)})
+						my_items = frappe.db.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", last_edit),'docstatus':("<", 2)})
 					else:
-						my_items = frappe.db.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=40, filters = {'docstatus':("<", 2)})
+						my_items = frappe.db.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})
 					print("found to push %s" % len(my_items or []))
 					if my_items:
 						for val in my_items:
@@ -144,7 +144,7 @@ def start_sync():
 								except Exception:
 									msg = frappe.get_traceback()
 									print("ERROR %s " % (msg or ''))
-									a = input()
+									#a = input()
 									
 
 
@@ -161,11 +161,11 @@ def start_sync():
 							if single and get_datetime(single['modified']) > get_datetime(dt.date_sync):
 								result.append(single)
 						else:
-							result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=40, filters = {'modified':(">", dtd),'docstatus':("<", 2)})
+							result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", dtd),'docstatus':("<", 2)})
 					except:
 						msg = frappe.get_traceback()
 						print("Something went wrong sync_pull if dt.date_sync: %s" % msg)
-						a = input()
+						#a = input()
 						continue
 				else:
 					try:
@@ -174,11 +174,11 @@ def start_sync():
 							if single:
 								result.append(single)
 						else:
-							result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=40, filters = {'docstatus':("<", 2)})
+							result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})
 					except:
 						msg = frappe.get_traceback()
 						print("Something went wrong sync_pull NO dt.date_sync: %s" % msg)
-						a = input()
+						#a = input()
 						continue
 				print("%s found to pull %s" % (dt.document_type,len(result or [])))
 				if result:
@@ -211,7 +211,7 @@ def start_sync():
 						except:
 							msg = frappe.get_traceback()
 							print("get went wrong %s" % msg)
-							a = input()
+							#a = input()
 							
 					#frappe.db.set_value("Sync DocTypes",dt.name,"date_sync",dt.date_sync)
 					#date_sync =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
@@ -227,7 +227,7 @@ def start_sync():
 						except:
 							msg = frappe.get_traceback()
 							print("Something went wrong last saving local date %s" % msg)
-							a = input()
+							#a = input()
 							
 					#frappe.db.sql("""update `tabSync DocTypes` set date_sync = '{}' where name = '{}'""".format(dt.date_sync,dt.name))
 					print("%s last sync pull %s" % (dt.document_type,dt.date_sync))
@@ -239,4 +239,4 @@ def start_sync():
 								params={"doctype":dt.document_type,"date":last_edit,"client":client })
 				except:
 					print("Something went wrong in last saving cloud date")
-					a = input()
+					#a = input()

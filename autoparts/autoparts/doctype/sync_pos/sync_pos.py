@@ -87,6 +87,9 @@ def start_sync():
 		for dt in items:
 			if not dt.document_type:
 				continue
+			if not frappe.db.table_exists(dt.document_type):
+				print("%s doesn't exist" % dt.document_type)
+				continue
 			#lid = get_last_modified(dt.document_type)	
 			# sync back
 			if dt.sync:
@@ -147,9 +150,17 @@ def start_sync():
 				if dt.date_sync:
 					dtd =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
 					print("%s pulling modified > %s " % (dt.document_type,dtd))
-					result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", dtd),'docstatus':("<", 2)})
+					try:
+						result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", dtd),'docstatus':("<", 2)})
+					except:
+						print("Something went wrong sync_pull if dt.date_sync:")
+						continue
 				else:
-					result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})
+					try:
+						result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})
+					except:
+						print("Something went wrong sync_pull if dt.date_sync:")
+						continue
 				print("%s found to pull %s" % (dt.document_type,len(result or [])))
 				if result:
 					#dt.date_sync = 

@@ -16,7 +16,12 @@ class SyncPOS(Document):
 def save_data(doc):
 	print("save_data %s" % doc)
 	try:
+		
 		_obj = json.loads(doc)
+		if frappe.db.exists(doc.get("doctype"), {'name': doc.get("name")}):
+			original = frappe.get_doc(doc.get("doctype"),doc.get("name"))
+			if get_datetime(original.modified) > get_datetime(_obj["modified"]):
+				return "New Version exists %s" % doc['name']
 		#_bypass_modified = _obj["_bypass_modified"]
 		item = frappe.get_doc(_obj)
 		item._bypass_modified = True

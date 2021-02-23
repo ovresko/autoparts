@@ -87,8 +87,9 @@ def start_sync():
 		for dt in items:
 			if not dt.document_type:
 				continue
-			if not frappe.db.table_exists(dt.document_type):
+			if not frappe.db.table_exists(dt.document_type) and not frappe.get_doc(dt.document_type):
 				print("%s doesn't exist" % dt.document_type)
+				input()
 				continue
 			#lid = get_last_modified(dt.document_type)	
 			# sync back
@@ -99,7 +100,8 @@ def start_sync():
 								 params={"doctype":dt.document_type,"client":client}
 					)
 				except:
-					print("Something went wrong")
+					print("Something went wrong at pushing")
+					input()
 				else:
 					
 					my_items = []
@@ -140,6 +142,7 @@ def start_sync():
 								except Exception:
 									msg = frappe.get_traceback()
 									print("ERROR %s " % (msg or ''))
+									input()
 									
 
 
@@ -154,12 +157,14 @@ def start_sync():
 						result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", dtd),'docstatus':("<", 2)})
 					except:
 						print("Something went wrong sync_pull if dt.date_sync:")
+						input()
 						continue
 				else:
 					try:
 						result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})
 					except:
-						print("Something went wrong sync_pull if dt.date_sync:")
+						print("Something went wrong sync_pull NO dt.date_sync:")
+						input()
 						continue
 				print("%s found to pull %s" % (dt.document_type,len(result or [])))
 				if result:
@@ -191,6 +196,7 @@ def start_sync():
 						except:
 							msg = frappe.get_traceback()
 							print("get went wrong %s" % msg)
+							input()
 							
 					#frappe.db.set_value("Sync DocTypes",dt.name,"date_sync",dt.date_sync)
 					#date_sync =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
@@ -202,6 +208,7 @@ def start_sync():
 							frappe.db.commit()
 						except:
 							print("Something went wrong last saving local date")
+							input()
 							
 					#frappe.db.sql("""update `tabSync DocTypes` set date_sync = '{}' where name = '{}'""".format(dt.date_sync,dt.name))
 					print("%s last sync pull %s" % (dt.document_type,dt.date_sync))
@@ -213,3 +220,4 @@ def start_sync():
 								params={"doctype":dt.document_type,"date":last_edit,"client":client })
 				except:
 					print("Something went wrong in last saving cloud date")
+					input()

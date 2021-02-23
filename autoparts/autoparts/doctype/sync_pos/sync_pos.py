@@ -157,7 +157,7 @@ def start_sync():
 					print("%s pulling modified > %s " % (dt.document_type,dtd))
 					try:
 						if _doctype.issingle:
-							single = conn.get_doc(dt.document_type)
+							single = conn.get_doc(dt.document_type,dt.document_type)
 							if single and get_datetime(single.modified) > get_datetime(dt.date_sync):
 								result.append(single)
 						else:
@@ -170,7 +170,7 @@ def start_sync():
 				else:
 					try:
 						if _doctype.issingle:
-							single = conn.get_doc(dt.document_type)
+							single = conn.get_doc(dt.document_type,dt.document_type)
 							if single:
 								result.append(single)
 						else:

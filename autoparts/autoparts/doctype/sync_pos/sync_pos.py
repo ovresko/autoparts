@@ -80,6 +80,7 @@ def start_sync():
 	do_sync = sp.sync
 	client = sp.client_name
 	items = sp.sync_pos_item
+	last_edit = None
 	if(user and url and pwd and do_sync and items):
 		print("%s %s %s" % (url,user,pwd))
 		conn = FrappeClient(url, user, pwd)
@@ -164,8 +165,8 @@ def start_sync():
 						try:
 							if not dt.date_sync or (get_datetime(val.modified) > get_datetime(dt.date_sync)):
 								dt.date_sync = get_datetime(val.modified)
-							if not last_edit or (get_datetime(val.modified) > get_datetime(last_edit)):
-								last_edit = get_datetime(val.modified)
+							#if not last_edit or (get_datetime(val.modified) > get_datetime(last_edit)):
+							#	last_edit = get_datetime(val.modified)
 								
 							
 							val._original_modified = val.modified
@@ -193,8 +194,9 @@ def start_sync():
 							
 					#frappe.db.sql("""update `tabSync DocTypes` set date_sync = '{}' where name = '{}'""".format(dt.date_sync,dt.name))
 					print("last sync pull %s" % dt.date_sync)
-			print("last sync push %s" % last_edit)
+			
 			if last_edit:
+				print("last sync push %s" % last_edit)
 				try:
 					last_edit_result = conn.get_api("autoparts.autoparts.doctype.sync_pos.sync_pos.set_last_modified",
 								params={"doctype":dt.document_type,"date":last_edit,"client":client })

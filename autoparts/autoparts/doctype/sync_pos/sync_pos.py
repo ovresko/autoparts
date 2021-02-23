@@ -221,7 +221,8 @@ def start_sync():
 							sp.save()
 							frappe.db.commit()
 						except:
-							print("Something went wrong last saving local date")
+							msg = frappe.get_traceback()
+							print("Something went wrong last saving local date %s" % msg)
 							a = input()
 							
 					#frappe.db.sql("""update `tabSync DocTypes` set date_sync = '{}' where name = '{}'""".format(dt.date_sync,dt.name))

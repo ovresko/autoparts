@@ -163,7 +163,8 @@ def start_sync():
 						else:
 							result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", dtd),'docstatus':("<", 2)})
 					except:
-						print("Something went wrong sync_pull if dt.date_sync:")
+						msg = frappe.get_traceback()
+						print("Something went wrong sync_pull if dt.date_sync: %s" % msg)
 						a = input()
 						continue
 				else:
@@ -175,7 +176,8 @@ def start_sync():
 						else:
 							result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})
 					except:
-						print("Something went wrong sync_pull NO dt.date_sync:")
+						msg = frappe.get_traceback()
+						print("Something went wrong sync_pull NO dt.date_sync: %s" % msg)
 						a = input()
 						continue
 				print("%s found to pull %s" % (dt.document_type,len(result or [])))

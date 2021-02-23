@@ -85,12 +85,14 @@ def start_sync():
 		print("%s %s %s" % (url,user,pwd))
 		conn = FrappeClient(url, user, pwd)
 		for dt in items:
+			
 			if not dt.document_type:
 				continue
 			if not frappe.db.exists('DocType', dt.document_type):
 				print("%s doesn't exist" % dt.document_type)
 				input()
 				continue
+			_doctype = frappe.get_doc("DocType", dt.document_type)
 			#lid = get_last_modified(dt.document_type)	
 			# sync back
 			if dt.sync:
@@ -154,14 +156,24 @@ def start_sync():
 					dtd =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
 					print("%s pulling modified > %s " % (dt.document_type,dtd))
 					try:
-						result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", dtd),'docstatus':("<", 2)})
+						if _doctype.issingle:
+							single = conn.get_doc(dt.document_type)
+							if single and get_datetime(single.modified) > get_datetime(dt.date_sync):
+								result.append(single)
+						else:
+							result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'modified':(">", dtd),'docstatus':("<", 2)})
 					except:
 						print("Something went wrong sync_pull if dt.date_sync:")
 						a = input()
 						continue
 				else:
 					try:
-						result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})
+						if _doctype.issingle:
+							single = conn.get_doc(dt.document_type)
+							if single:
+								result.append(single)
+						else:
+							result = conn.get_list(dt.document_type, fields = ['*'],order_by='modified asc',limit_page_length=20, filters = {'docstatus':("<", 2)})
 					except:
 						print("Something went wrong sync_pull NO dt.date_sync:")
 						a = input()

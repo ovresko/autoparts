@@ -214,6 +214,7 @@ def start_sync():
 							
 					#frappe.db.set_value("Sync DocTypes",dt.name,"date_sync",dt.date_sync)
 					#date_sync =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
+					sp = frappe.get_single('Sync POS')
 					item = next( (x for x in sp.sync_pos_item if (x.name==dt.name)), None)
 					if item:
 						try:

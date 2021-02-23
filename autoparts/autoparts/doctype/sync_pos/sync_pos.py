@@ -131,6 +131,7 @@ def start_sync():
 									val.flags.ignore_if_duplicate = True
 									val.flags.ignore_links = True
 									val.flags.ignore_permissions = True
+									val.flags.ignore_validate_update_after_submit = True
 									val.flags.ignore_mandatory = True
 									val._bypass_modified = True
 									result = conn.get_api(

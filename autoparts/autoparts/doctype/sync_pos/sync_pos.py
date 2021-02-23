@@ -90,7 +90,7 @@ def start_sync():
 				continue
 			if not frappe.db.exists('DocType', dt.document_type):
 				print("%s doesn't exist" % dt.document_type)
-				input()
+				a = input()
 				continue
 			_doctype = frappe.get_doc("DocType", dt.document_type)
 			#lid = get_last_modified(dt.document_type)	
@@ -103,7 +103,7 @@ def start_sync():
 					)
 				except:
 					print("Something went wrong at pushing")
-					input()
+					a = input()
 				else:
 					
 					my_items = []
@@ -144,7 +144,7 @@ def start_sync():
 								except Exception:
 									msg = frappe.get_traceback()
 									print("ERROR %s " % (msg or ''))
-									input()
+									a = input()
 									
 
 
@@ -210,7 +210,7 @@ def start_sync():
 						except:
 							msg = frappe.get_traceback()
 							print("get went wrong %s" % msg)
-							input()
+							a = input()
 							
 					#frappe.db.set_value("Sync DocTypes",dt.name,"date_sync",dt.date_sync)
 					#date_sync =  dt.date_sync.strftime("%Y-%m-%d %H:%M:%S.%f")
@@ -222,7 +222,7 @@ def start_sync():
 							frappe.db.commit()
 						except:
 							print("Something went wrong last saving local date")
-							input()
+							a = input()
 							
 					#frappe.db.sql("""update `tabSync DocTypes` set date_sync = '{}' where name = '{}'""".format(dt.date_sync,dt.name))
 					print("%s last sync pull %s" % (dt.document_type,dt.date_sync))
@@ -234,4 +234,4 @@ def start_sync():
 								params={"doctype":dt.document_type,"date":last_edit,"client":client })
 				except:
 					print("Something went wrong in last saving cloud date")
-					input()
+					a = input()

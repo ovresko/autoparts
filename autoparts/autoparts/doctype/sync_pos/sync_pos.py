@@ -137,7 +137,7 @@ def start_sync():
 									val.flags.ignore_validate_update_after_submit = True
 									val.flags.ignore_mandatory = True
 									val._bypass_modified = True
-									result = conn.get_api(
+									result = conn.post_api(
 										"autoparts.autoparts.doctype.sync_pos.sync_pos.save_data",
 												 params={"doc":val.as_json()}
 									)

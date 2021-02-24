@@ -130,8 +130,6 @@ def start_sync():
 							
 							if val:
 								try:
-									if not last_edit or (get_datetime(val.modified) > get_datetime(last_edit)):
-										last_edit = get_datetime(val.modified)
 									val._original_modified = val.modified
 									val.flags.ignore_if_duplicate = True
 									val.flags.ignore_links = True
@@ -144,6 +142,8 @@ def start_sync():
 												 params={"doc":val.as_json()}
 									)
 									print("push result : %s" % result)
+									if not last_edit or (get_datetime(val.modified) > get_datetime(last_edit)):
+										last_edit = get_datetime(val.modified)
 									#data = val.as_dict()
 									
 									#conn.update(data)

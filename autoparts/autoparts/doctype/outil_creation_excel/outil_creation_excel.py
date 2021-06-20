@@ -94,8 +94,8 @@ def lancer(groupe):
 				variant1.save()
 				#frappe.db.commit()
 			if o.bosch:
-				variant2 = get_variant(template=model.name,manufacturer='BOSCH',manufacturer_part_no=o.bosch)
-               	        	variant2.save()
+                variant2 = get_variant(template=model.name,manufacturer='BOSCH',manufacturer_part_no=o.bosch)
+                variant2.save()
 			if o.mahle:
                	        	variant3 = get_variant(template=model.name,manufacturer='MAHLE',manufacturer_part_no=o.mahle)
                	        	variant3.save()

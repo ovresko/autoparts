@@ -32,10 +32,10 @@ class Generationvehicule(Document):
 			self.periode = ''
 	def autoname(self):
 		if self.modele_vehicule:
-                        marque = frappe.get_doc('Modele de vehicule',self.modele_vehicule)
-                        code = marque.code_interne
+            marque = frappe.get_doc('Modele de vehicule',self.modele_vehicule)
+            code = marque.code_interne
 			self.nom_generation = marque.modele + ' '+self.generation
-                        self.code_interne = make_autoname(code + '.##')
+            self.code_interne = make_autoname(code + '.##')
 		if not self.code_interne:
 			self.code_interne = self.generation
 		#self.name = self.code_interne

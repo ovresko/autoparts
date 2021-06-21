@@ -12,8 +12,8 @@ from frappe.utils import getdate, get_datetime
 try:
     from StringIO import StringIO
 except:
-    from IO import StringIO
-    
+    from io import StringIO
+
 class SyncPOS(Document):
     pass
 

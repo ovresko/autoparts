@@ -5,9 +5,9 @@ import frappe
 
 try:
     from StringIO import StringIO
-except:
-    from IO import StringIO
-
+except ImportError:
+    from io import StringIO
+    
 try:
     unicode
 except NameError:

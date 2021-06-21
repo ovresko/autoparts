@@ -3,14 +3,17 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
-from io import StringIO
-import io
 import frappe
 from frappe.model.document import Document
 from autoparts.autoparts.doctype.sync_pos.frappeclient import FrappeClient
 import json
 from frappe.utils import getdate, get_datetime
 
+try:
+    from StringIO import StringIO
+except:
+    from IO import StringIO
+    
 class SyncPOS(Document):
     pass
 

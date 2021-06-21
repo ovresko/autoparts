@@ -3,8 +3,8 @@
 # For license information, please see license.txt
 
 from __future__ import unicode_literals
+from io import StringIO
 import io
-import StringIO
 import frappe
 from frappe.model.document import Document
 from autoparts.autoparts.doctype.sync_pos.frappeclient import FrappeClient

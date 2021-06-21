@@ -7,6 +7,7 @@ import frappe
 from frappe.model.document import Document
 from autoparts.autoparts.doctype.sync_pos.frappeclient import FrappeClient
 import json
+import io
 from frappe.utils import getdate, get_datetime
 
 class SyncPOS(Document):

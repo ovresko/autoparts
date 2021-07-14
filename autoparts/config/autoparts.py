@@ -22,20 +22,20 @@ def get_data():
                     "name": "Modele de vehicule",
 					"description": _("Modele de vehicule"),
                 },
-		{
+		        {
                     "type": "doctype",
                     "name": "Marque vehicule",
 					"description": _("Marque vehicule"),
                 },
-		{
+		        {
                     "type": "doctype",
                     "name": "Critere vehicule",
-                                        "description": _("Critere vehicule"),
+                    "description": _("Critere vehicule"),
                 },
                 {
                     "type": "doctype",
                     "name": "Fiche technique parametre",
-                                        "description": _("Fiche technique parametre"),
+                    "description": _("Fiche technique parametre"),
                 },
                 {
                     "type": "doctype",
@@ -71,9 +71,9 @@ def get_data():
 				},
 				{
 					 "type": "report",
-                                        "is_query_report": True,
-                                        "name": "Versions sans articles",
-                                        "doctype": "Version vehicule",
+                     "is_query_report": True,
+                     "name": "Versions sans articles",
+                     "doctype": "Version vehicule",
 				}
 			]
 		}

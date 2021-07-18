@@ -492,7 +492,7 @@
    "modified_by": "Administrator", 
    "name": "Item-marque_vehicule_supporte", 
    "no_copy": 0, 
-   
+   "options": "Marque vehicule item",
    "owner": "Administrator", 
    "parent": null, 
    "parentfield": null, 

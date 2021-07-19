@@ -900,7 +900,7 @@
    "modified_by": "Administrator", 
    "name": "Item-marque_vehicule", 
    "no_copy": 0, 
-   "options": "Marque vehicule", 
+   "options": null, 
    "owner": "Administrator", 
    "parent": null, 
    "parentfield": null, 
